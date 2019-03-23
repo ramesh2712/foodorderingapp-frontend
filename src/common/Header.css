@@ -1,11 +1,10 @@
 .app-header {
     background-color: #243237;
+    display: flex;
     height: 36px;
     padding: 8px 16px 8px 8px;
-}
-
-.login-button {
-    float: right;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .login-spacing {
@@ -15,4 +14,21 @@
 .app-logo {
     color: white;
     margin: 5px;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: white;
+}
+.search-icon {
+    color: white
+}
+
+.input {
+
+    width: 300px;
+    color: white;
+}
+
+.search {
+    padding-bottom: 5px;
+    color: white;
 }
