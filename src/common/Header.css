@@ -1,0 +1,9 @@
+.app-header {
+    background-color: darkgrey;
+    height: 36px;
+    padding: 8px 32px 8px 16px;
+}
+
+.login-button {
+    float: right;
+}
