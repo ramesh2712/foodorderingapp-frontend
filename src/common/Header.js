@@ -3,6 +3,7 @@ import './Header.css';
 import Button from '@material-ui/core/Button';
 import { SvgIcon } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Fastfood from '@material-ui/icons/Fastfood';
 
 class Header extends Component {
 
@@ -17,6 +18,11 @@ class Header extends Component {
                          </SvgIcon>
                             <span className="login-spacing">Login</span> 
                          </Button>
+                    </div>
+                    <div> 
+                         <SvgIcon className="app-logo">
+                             <Fastfood />
+                         </SvgIcon>
                     </div>
                 </header>
             </div>
