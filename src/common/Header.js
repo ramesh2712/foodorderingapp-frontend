@@ -94,8 +94,9 @@ class Header extends Component {
         this.setState({ firstnameRequired: "dispNone"})
     }
     loginClickHandler = () => {
-        this.state.contactno === "" ? this.setState({ contactNoRequired: "dispBlock" }) : this.setState({ contactNoRequired: "dispNone" })
         this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" })
+        let isValidContactNo = this.contactnoFieldValidation();
+        console.log(isValidContactNo)
     }
     signupClickHandler = () => {
         this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" })        
@@ -237,7 +238,12 @@ class Header extends Component {
                                 <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
                                 <Input id="contactno" type="text" contactno={this.state.contactno} onChange={this.inputContactnoChangeHandler} />
                                 <FormHelperText className={this.state.contactNoRequired}>
-                                    <span className="red">required</span>
+                                    {this.state.validContactNo === true && 
+                                         <span className="red">required</span>
+                                    }
+                                    {this.state.validContactNo === false && 
+                                         <span className="red">Invalid Contact</span>
+                                    }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
                             <FormControl required>
