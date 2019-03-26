@@ -68,7 +68,9 @@ class Header extends Component {
             lastname: "",
             emailRequired: "dispNone",
             email: "",
-            validEmail: false
+            validEmail: false,
+            validPassword : false,
+            validContactNo: false,
         };
     }
     openModalHandler = () => {
@@ -92,13 +94,14 @@ class Header extends Component {
         this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" })
     }
     signupClickHandler = () => {
-        this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" })
-        this.state.contactno === "" ? this.setState({ contactNoRequired: "dispBlock" }) : this.setState({ contactNoRequired: "dispNone" })
-        this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" })
-        
+        this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" })        
         // Validate Email 
-        var isValidEmail = this.emailFieldValidation();
-        console.log(isValidEmail)
+        let isValidEmail = this.emailFieldValidation();
+        console.log(isValidEmail);
+        let isValidPassword = this.passwordFieldValidation();
+        console.log(isValidPassword);
+        let isValidContactNo = this.contactnoFieldValidation();
+        console.log(isValidContactNo)
     }
     emailFieldValidation = () => {
         let isValidEmail = false ;
@@ -114,6 +117,47 @@ class Header extends Component {
             isValidEmail = pattern;
         }
         return isValidEmail
+    }
+    passwordFieldValidation = () => {
+        let isValidPassword = false ;
+        if (this.state.password === ""){
+             this.setState({ 
+                 passwordRequired: "dispBlock",
+                 validPassword: true})
+        } else {
+            // Check for Valid Password with A valid password is the one that contains at least a capital letter, a small letter, a number and a special character
+            // ^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).+$
+            var pattern = new RegExp(/^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).+$/).test(this.state.password);
+            this.setState({validPassword:pattern});
+            pattern === false ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
+            isValidPassword = pattern;
+        }
+        return isValidPassword
+    }
+    contactnoFieldValidation = () => {
+        let isValidContactNo = false ;
+        if (this.state.contactno === ""){
+             this.setState({ 
+                 contactNoRequired: "dispBlock",
+                 validContactNo: true})
+        } else {
+            // Check for Valid mobile no ...
+            var pattern = new RegExp(/^\d{10}$/).test(this.state.contactno);
+            console.log('contact no '+ pattern)
+            if (this.state.contactno.length === 10 && pattern === true){
+                isValidContactNo = true
+                this.setState({
+                                validContactNo: true,
+                                contactNoRequired: "dispNone"
+                            })  
+            } else {
+                this.setState({
+                                validContactNo: false,
+                                contactNoRequired: "dispBlock"
+                            })
+            }
+        }
+        return isValidContactNo 
     }
     inputContactnoChangeHandler = (e) => {
         this.setState({
@@ -232,14 +276,20 @@ class Header extends Component {
                                 <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
                                 <Input id="contactno" type="text" contactno={this.state.contactno} onChange={this.inputContactnoChangeHandler} />
                                 <FormHelperText className={this.state.contactNoRequired}>
-                                     <span className="red">required</span>
+                                     {this.state.validContactNo === true && <span className="red">required</span>}
+                                     {this.state.validContactNo === false && <span className="red">Contact No. must contain only numbers and must be 10 digits long</span>}  
                                 </FormHelperText>
                             </FormControl> <br /> <br />
                             <FormControl required>
                                 <InputLabel htmlFor="password"> Password</InputLabel>
                                 <Input id="password" type="password" password={this.state.password} onChange={this.inputPasswordChangeHandler} />
                                 <FormHelperText className={this.state.passwordRequired}>
-                                    <span className="red">required</span>
+                                    {this.state.validPassword === true && 
+                                         <span className="red">required</span>
+                                    }
+                                    {this.state.validPassword === false && 
+                                         <span className="red">Password must contain at least one capital letter, one small letter, one number, and one special character</span>
+                                    }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
                             <Button variant="contained" color="primary" onClick={this.signupClickHandler}> SIGNUP
