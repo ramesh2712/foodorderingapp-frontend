@@ -40,10 +40,14 @@ const customStyles = {
 
 const TabContainer = function (props) {
     return (
-        <Typography component="div" style={{ padding: 0 , textAlign: "center"}}>
-        {props.children}
+        <Typography component="div" style={{ padding: 0, textAlign: "center" }}>
+            {props.children}
         </Typography>
     );
+}
+
+TabContainer.propTypes = {
+    children: PropTypes.node.isRequired
 }
 
 class Header extends Component {
@@ -106,18 +110,20 @@ class Header extends Component {
                         <Tab label="LOGIN" />
                         <Tab label="SIGNUP" />
                     </Tabs>
-                    <TabContainer>
-                        <FormControl required>
-                            <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
-                            <Input id="contactno" type="text" />
-                        </FormControl> <br/> <br/>
-                        <FormControl required>
-                            <InputLabel htmlFor="password"> Password</InputLabel>
-                            <Input id="password" type="password" />
-                        </FormControl> <br/> <br/>
-                        <Button variant="contained" color="primary"> LOGIN
-                        </Button>
-                    </TabContainer>
+                    {this.state.value === 0 &&
+                        <TabContainer>
+                            <FormControl required>
+                                <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
+                                <Input id="contactno" type="text" />
+                            </FormControl> <br /> <br />
+                            <FormControl required>
+                                <InputLabel htmlFor="password"> Password</InputLabel>
+                                <Input id="password" type="password" />
+                            </FormControl> <br /> <br />
+                            <Button variant="contained" color="primary"> LOGIN
+                            </Button>
+                        </TabContainer>
+                    }
                 </Modal>
             </div>
         )
