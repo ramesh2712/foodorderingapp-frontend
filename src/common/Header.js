@@ -88,6 +88,10 @@ class Header extends Component {
     }
     tabChangeHandler = (event, value) => {
         this.setState({ value });
+        this.setState({ contactNoRequired: "dispNone" })
+        this.setState({ passwordRequired: "dispNone" })
+        this.setState({ emailRequired: "dispNone"})
+        this.setState({ firstnameRequired: "dispNone"})
     }
     loginClickHandler = () => {
         this.state.contactno === "" ? this.setState({ contactNoRequired: "dispBlock" }) : this.setState({ contactNoRequired: "dispNone" })
