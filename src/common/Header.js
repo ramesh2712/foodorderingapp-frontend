@@ -67,7 +67,8 @@ class Header extends Component {
             lastnameRequired: "dispNone",
             lastname: "",
             emailRequired: "dispNone",
-            email: ""
+            email: "",
+            validEmail: false
         };
     }
     openModalHandler = () => {
@@ -92,9 +93,27 @@ class Header extends Component {
     }
     signupClickHandler = () => {
         this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" })
-        this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" })
         this.state.contactno === "" ? this.setState({ contactNoRequired: "dispBlock" }) : this.setState({ contactNoRequired: "dispNone" })
         this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" })
+        
+        // Validate Email 
+        var isValidEmail = this.emailFieldValidation();
+        console.log(isValidEmail)
+    }
+    emailFieldValidation = () => {
+        let isValidEmail = false ;
+        if (this.state.email === ""){
+             this.setState({ 
+                 emailRequired: "dispBlock",
+                 validEmail: true})
+        } else {
+            // Check for Valid email
+            var pattern = new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/).test(this.state.email);
+            this.setState({validEmail:pattern});
+            pattern === false ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
+            isValidEmail = pattern;
+        }
+        return isValidEmail
     }
     inputContactnoChangeHandler = (e) => {
         this.setState({
@@ -201,14 +220,19 @@ class Header extends Component {
                                 <InputLabel htmlFor="email"> Email </InputLabel>
                                 <Input id="email" type="text" lastname={this.state.email} onChange={this.inputEmailChangeHandler} />
                                 <FormHelperText className={this.state.emailRequired}>
-                                    <span className="red">required</span>
+                                    {this.state.validEmail === true &&
+                                         <span className="red">required</span>
+                                    }
+                                    {this.state.validEmail === false &&
+                                         <span className="red">Invalid Email</span>
+                                    }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
                             <FormControl required>
                                 <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
                                 <Input id="contactno" type="text" contactno={this.state.contactno} onChange={this.inputContactnoChangeHandler} />
                                 <FormHelperText className={this.state.contactNoRequired}>
-                                    <span className="red">required</span>
+                                     <span className="red">required</span>
                                 </FormHelperText>
                             </FormControl> <br /> <br />
                             <FormControl required>
