@@ -15,8 +15,9 @@ import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
-const styles = theme => ({
+const styles = {
     root: {
         color: '#fff',
         width: '320px',
@@ -25,8 +26,14 @@ const styles = theme => ({
             // The MUI source seems to use this but it doesn't work
             borderBottom: '1px solid white',
         },
+    },
+    formControl: {
+        width: "80%"
+    },
+    loginButton: {
+        marginTop: 30
     }
-})
+}
 
 const customStyles = {
     content: {
@@ -92,6 +99,10 @@ class Header extends Component {
         this.setState({ passwordRequired: "dispNone" })
         this.setState({ emailRequired: "dispNone"})
         this.setState({ firstnameRequired: "dispNone"})
+        this.setState({contactno:""})
+        this.setState({password:""})
+        this.setState({email: ""})
+        this.setState({firstname: ""})
     }
     loginClickHandler = () => {
         this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" })
@@ -194,6 +205,7 @@ class Header extends Component {
         const { classes } = this.props;
 
         return (
+            <MuiThemeProvider>
             <div>
                 <header className="app-header">
                     <div>
@@ -234,7 +246,7 @@ class Header extends Component {
                     </Tabs>
                     {this.state.value === 0 &&
                         <TabContainer>
-                            <FormControl required>
+                            <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
                                 <Input id="contactno" type="text" contactno={this.state.contactno} onChange={this.inputContactnoChangeHandler} />
                                 <FormHelperText className={this.state.contactNoRequired}>
@@ -246,31 +258,31 @@ class Header extends Component {
                                     }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
-                            <FormControl required>
+                            <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="password"> Password</InputLabel>
                                 <Input id="password" type="password" password={this.state.password} onChange={this.inputPasswordChangeHandler} />
                                 <FormHelperText className={this.state.passwordRequired}>
                                     <span className="red">required</span>
                                 </FormHelperText>
                             </FormControl> <br /> <br />
-                            <Button variant="contained" color="primary" onClick={this.loginClickHandler}> LOGIN
+                            <Button variant="contained" color="primary" onClick={this.loginClickHandler} className={classes.loginButton}> LOGIN
                             </Button>
                         </TabContainer>
                     }
                     {this.state.value === 1 &&
                         <TabContainer>
-                            <FormControl required>
+                            <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="firstname"> First Name </InputLabel>
                                 <Input id="firstname" type="text" firstname={this.state.firstname} onChange={this.inputFirstnameChangeHandler} />
                                 <FormHelperText className={this.state.firstnameRequired}>
                                     <span className="red">required</span>
                                 </FormHelperText>
                             </FormControl> <br /> <br />
-                            <FormControl>
+                            <FormControl className={classes.formControl}>
                                 <InputLabel htmlFor="lastname"> Last Name </InputLabel>
                                 <Input id="lastname" type="text" lastname={this.state.lastname} onChange={this.inputLastnameChangeHandler} />
                             </FormControl> <br /> <br />
-                            <FormControl required>
+                            <FormControl required className={classes.formControl}> 
                                 <InputLabel htmlFor="email"> Email </InputLabel>
                                 <Input id="email" type="text" lastname={this.state.email} onChange={this.inputEmailChangeHandler} />
                                 <FormHelperText className={this.state.emailRequired}>
@@ -282,7 +294,7 @@ class Header extends Component {
                                     }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
-                            <FormControl required>
+                            <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
                                 <Input id="contactno" type="text" contactno={this.state.contactno} onChange={this.inputContactnoChangeHandler} />
                                 <FormHelperText className={this.state.contactNoRequired}>
@@ -290,7 +302,7 @@ class Header extends Component {
                                      {this.state.validContactNo === false && <span className="red">Contact No. must contain only numbers and must be 10 digits long</span>}  
                                 </FormHelperText>
                             </FormControl> <br /> <br />
-                            <FormControl required>
+                            <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="password"> Password</InputLabel>
                                 <Input id="password" type="password" password={this.state.password} onChange={this.inputPasswordChangeHandler} />
                                 <FormHelperText className={this.state.passwordRequired}>
@@ -302,12 +314,13 @@ class Header extends Component {
                                     }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
-                            <Button variant="contained" color="primary" onClick={this.signupClickHandler}> SIGNUP
+                            <Button variant="contained" color="primary" onClick={this.signupClickHandler} className={classes.loginButton}> SIGNUP
                             </Button>
                         </TabContainer>
                     }
                 </Modal>
             </div>
+            </MuiThemeProvider>
         )
     }
 }
