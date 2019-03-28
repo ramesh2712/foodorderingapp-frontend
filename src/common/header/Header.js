@@ -82,7 +82,8 @@ class Header extends Component {
             validContactNo: false,
             open: false,
             signupErrorMsg: "",
-            loginErrorMsg: ""
+            loginErrorMsg: "",
+            successMessage: ""
         };
     }
     openModalHandler = () => {
@@ -123,10 +124,38 @@ class Header extends Component {
         if (isValidContactNo === true && this.state.password !== "") {
             this.callApiForLogin()
         }
-        //  this.setState({open: true})
     }
     callApiForLogin = () => {
+        console.log("Login api started")
+        let xhrPosts = new XMLHttpRequest();
+        let that = this
 
+        let param = window.btoa(this.state.contactno + ":" + this.state.password);
+        console.log(param)
+        xhrPosts.addEventListener("readystatechange", function () {
+
+            if (this.readyState === 4) {
+                console.log(this.responseText)
+                console.log(this.status)
+                var data = JSON.parse(this.responseText)
+                if (this.status === 200) {
+                    that.setState({
+                        open: true,
+                        successMessage: "Logged in successfully!"
+                    })
+                    that.closeModalHandler();
+                }
+                else if (this.status === 401) {
+                    that.setState({
+                        loginErrorMsg: data.message
+                    })
+                }
+            }
+        });
+        xhrPosts.open("POST", this.baseUrl + "/customer/login");
+        xhrPosts.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhrPosts.setRequestHeader('authorization', "Basic " + param);
+        xhrPosts.send();
     }
     signupClickHandler = () => {
         // Validate first Name ....
@@ -159,16 +188,14 @@ class Header extends Component {
         xhrPosts.addEventListener("readystatechange", function () {
 
             if (this.readyState === 4) {
+                console.log(this.responseText)
+                console.log(this.response)
                 if (this.status === 201) {
-                    /* that.setState({
-                         dataPosts: JSON.parse(this.responseText).data
-                     })*/
-                    console.log(this.status)
                     that.setState({
                         open: true,
-                        value: 0
+                        successMessage: "Registered successfully! Please login now!"
                     })
-                    console.log(this.responseText)
+                    that.tabChangeHandler("" , 0);
                 }
                 else if (this.status === 400) {
                     that.setState({
@@ -336,6 +363,10 @@ class Header extends Component {
                                     <span className="red">required</span>
                                 </FormHelperText>
                             </FormControl> <br /> <br />
+                            {Utils.isUndefinedOrNullOrEmpty(this.state.loginErrorMsg) ?
+                                null : (
+                                    <div className="error-msg">{this.state.loginErrorMsg}</div>
+                                )}
                             <Button variant="contained" color="primary" onClick={this.loginClickHandler} className={classes.loginButton}> LOGIN
                             </Button>
                         </TabContainer>
@@ -405,7 +436,7 @@ class Header extends Component {
                     ContentProps={{
                         'aria-describedby': 'message-id'
                     }}
-                    message={<span id="message-id"> Registered successfully! Please login now!</span>}
+                    message={<span id="message-id"> {this.state.successMessage}</span>}
                 />
             </div>
         )
