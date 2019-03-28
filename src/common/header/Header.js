@@ -143,6 +143,7 @@ class Header extends Component {
                         open: true,
                         successMessage: "Logged in successfully!"
                     })
+                    sessionStorage.setItem('access-token', this.getResponseHeader('access-token'));
                     that.closeModalHandler();
                 }
                 else if (this.status === 401) {
