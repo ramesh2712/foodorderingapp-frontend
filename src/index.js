@@ -4,9 +4,25 @@ import './index.css';
 import Home from './screens/home/Home';
 import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';  
+
+const theme = createMuiTheme({
+    palette: {
+       primary: {
+          light: '#fff',
+          main: "#3f51b5",
+          dark: '#000'
+       }
+    },
+    typography: { 
+       useNextVariants: true
+    }
+ });
 
 ReactDOM.render(
-    <Home />,
+     <MuiThemeProvider theme = { theme }>
+      <Home />
+    </MuiThemeProvider>,
     document.getElementById('root')
 );
 

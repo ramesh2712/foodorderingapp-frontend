@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Header.css';
+import * as Utils from "../../common/Utils";
 import Button from '@material-ui/core/Button';
 import { SvgIcon, withStyles } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -15,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import Snackbar from '@material-ui/core/Snackbar';
 
 const styles = {
     root: {
@@ -62,6 +63,7 @@ class Header extends Component {
 
     constructor() {
         super();
+        this.baseUrl = "http://localhost:8080/api"
         this.state = {
             modalIsOpen: false,
             value: 0,
@@ -76,8 +78,11 @@ class Header extends Component {
             emailRequired: "dispNone",
             email: "",
             validEmail: false,
-            validPassword : false,
+            validPassword: false,
             validContactNo: false,
+            open: false,
+            signupErrorMsg: "",
+            loginErrorMsg: ""
         };
     }
     openModalHandler = () => {
@@ -89,91 +94,158 @@ class Header extends Component {
         this.setState({ contactNoRequired: "dispNone" })
         this.setState({ passwordRequired: "dispNone" })
         this.setState({ value: 0 })
-       // Signup
-        this.setState({ emailRequired: "dispNone"})
-        this.setState({ firstnameRequired: "dispNone"})
+        // Signup
+        this.setState({ emailRequired: "dispNone" })
+        this.setState({ firstnameRequired: "dispNone" })
+        this.setState({ signupErrorMsg: "" });
+        this.setState({ loginErrorMsg: "" })
+
     }
     tabChangeHandler = (event, value) => {
         this.setState({ value });
         this.setState({ contactNoRequired: "dispNone" })
         this.setState({ passwordRequired: "dispNone" })
-        this.setState({ emailRequired: "dispNone"})
-        this.setState({ firstnameRequired: "dispNone"})
-        this.setState({contactno:""})
-        this.setState({password:""})
-        this.setState({email: ""})
-        this.setState({firstname: ""})
+        this.setState({ emailRequired: "dispNone" })
+        this.setState({ firstnameRequired: "dispNone" })
+        this.setState({ contactno: "" })
+        this.setState({ password: "" })
+        this.setState({ email: "" })
+        this.setState({ firstname: "" })
+        this.setState({ signupErrorMsg: "" });
+        this.setState({ loginErrorMsg: "" });
     }
     loginClickHandler = () => {
         this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" })
         let isValidContactNo = this.contactnoFieldValidation();
-        console.log(isValidContactNo)
+        this.setState({
+            loginErrorMsg: ""
+        })
+        if (isValidContactNo === true && this.state.password !== "") {
+            this.callApiForLogin()
+        }
+        //  this.setState({open: true})
+    }
+    callApiForLogin = () => {
+
     }
     signupClickHandler = () => {
-        this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" })        
+        // Validate first Name ....
+        this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" })
         // Validate Email 
         let isValidEmail = this.emailFieldValidation();
-        console.log(isValidEmail);
+        // Validate Password
         let isValidPassword = this.passwordFieldValidation();
-        console.log(isValidPassword);
+        // Validate Contact No.
         let isValidContactNo = this.contactnoFieldValidation();
-        console.log(isValidContactNo)
+
+        this.setState({ signupErrorMsg: "" });
+        if (isValidEmail === true && isValidPassword === true && isValidContactNo === true) {
+            this.callApiForSignup()
+        }
     }
+    callApiForSignup = () => {
+        // let access_token = sessionStorage.getItem('access-token')
+        console.log("Signup api started")
+        let data = {
+            "contact_number": this.state.contactno,
+            "email_address": this.state.email,
+            "first_name": this.state.firstname,
+            "last_name": this.state.lastname,
+            "password": this.state.password
+        };
+        let xhrPosts = new XMLHttpRequest();
+        let that = this
+
+        xhrPosts.addEventListener("readystatechange", function () {
+
+            if (this.readyState === 4) {
+                if (this.status === 201) {
+                    /* that.setState({
+                         dataPosts: JSON.parse(this.responseText).data
+                     })*/
+                    console.log(this.status)
+                    that.setState({
+                        open: true,
+                        value: 0
+                    })
+                    console.log(this.responseText)
+                }
+                else if (this.status === 400) {
+                    that.setState({
+                        signupErrorMsg: "This contact number is already registered! Try other contact number."
+                    })
+                }
+            }
+        });
+        xhrPosts.open("POST", this.baseUrl + "/customer/signup");
+        xhrPosts.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhrPosts.send(JSON.stringify(data));
+    }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({ open: false });
+    };
     emailFieldValidation = () => {
-        let isValidEmail = false ;
-        if (this.state.email === ""){
-             this.setState({ 
-                 emailRequired: "dispBlock",
-                 validEmail: true})
+        let isValidEmail = false;
+        if (this.state.email === "") {
+            this.setState({
+                emailRequired: "dispBlock",
+                validEmail: true
+            })
         } else {
             // Check for Valid email
             var pattern = new RegExp(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/).test(this.state.email);
-            this.setState({validEmail:pattern});
+            this.setState({ validEmail: pattern });
             pattern === false ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
             isValidEmail = pattern;
         }
         return isValidEmail
     }
     passwordFieldValidation = () => {
-        let isValidPassword = false ;
-        if (this.state.password === ""){
-             this.setState({ 
-                 passwordRequired: "dispBlock",
-                 validPassword: true})
+        let isValidPassword = false;
+        if (this.state.password === "") {
+            this.setState({
+                passwordRequired: "dispBlock",
+                validPassword: true
+            })
         } else {
             // Check for Valid Password with A valid password is the one that contains at least a capital letter, a small letter, a number and a special character
             // ^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).+$
             var pattern = new RegExp(/^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*\d).+$/).test(this.state.password);
-            this.setState({validPassword:pattern});
+            this.setState({ validPassword: pattern });
             pattern === false ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
             isValidPassword = pattern;
         }
         return isValidPassword
     }
     contactnoFieldValidation = () => {
-        let isValidContactNo = false ;
-        if (this.state.contactno === ""){
-             this.setState({ 
-                 contactNoRequired: "dispBlock",
-                 validContactNo: true})
+        let isValidContactNo = false;
+        if (this.state.contactno === "") {
+            this.setState({
+                contactNoRequired: "dispBlock",
+                validContactNo: true
+            })
         } else {
             // Check for Valid mobile no ...
             var pattern = new RegExp(/^\d{10}$/).test(this.state.contactno);
-            console.log('contact no '+ pattern)
-            if (this.state.contactno.length === 10 && pattern === true){
+            console.log('contact no ' + pattern)
+            if (this.state.contactno.length === 10 && pattern === true) {
                 isValidContactNo = true
                 this.setState({
-                                validContactNo: true,
-                                contactNoRequired: "dispNone"
-                            })  
+                    validContactNo: true,
+                    contactNoRequired: "dispNone"
+                })
             } else {
                 this.setState({
-                                validContactNo: false,
-                                contactNoRequired: "dispBlock"
-                            })
+                    validContactNo: false,
+                    contactNoRequired: "dispBlock"
+                })
             }
         }
-        return isValidContactNo 
+        return isValidContactNo
     }
     inputContactnoChangeHandler = (e) => {
         this.setState({
@@ -205,7 +277,6 @@ class Header extends Component {
         const { classes } = this.props;
 
         return (
-            <MuiThemeProvider>
             <div>
                 <header className="app-header">
                     <div>
@@ -250,11 +321,11 @@ class Header extends Component {
                                 <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
                                 <Input id="contactno" type="text" contactno={this.state.contactno} onChange={this.inputContactnoChangeHandler} />
                                 <FormHelperText className={this.state.contactNoRequired}>
-                                    {this.state.validContactNo === true && 
-                                         <span className="red">required</span>
+                                    {this.state.validContactNo === true &&
+                                        <span className="red">required</span>
                                     }
-                                    {this.state.validContactNo === false && 
-                                         <span className="red">Invalid Contact</span>
+                                    {this.state.validContactNo === false &&
+                                        <span className="red">Invalid Contact</span>
                                     }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
@@ -282,15 +353,15 @@ class Header extends Component {
                                 <InputLabel htmlFor="lastname"> Last Name </InputLabel>
                                 <Input id="lastname" type="text" lastname={this.state.lastname} onChange={this.inputLastnameChangeHandler} />
                             </FormControl> <br /> <br />
-                            <FormControl required className={classes.formControl}> 
+                            <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="email"> Email </InputLabel>
                                 <Input id="email" type="text" lastname={this.state.email} onChange={this.inputEmailChangeHandler} />
                                 <FormHelperText className={this.state.emailRequired}>
                                     {this.state.validEmail === true &&
-                                         <span className="red">required</span>
+                                        <span className="red">required</span>
                                     }
                                     {this.state.validEmail === false &&
-                                         <span className="red">Invalid Email</span>
+                                        <span className="red">Invalid Email</span>
                                     }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
@@ -298,34 +369,47 @@ class Header extends Component {
                                 <InputLabel htmlFor="contactno"> Contact No.</InputLabel>
                                 <Input id="contactno" type="text" contactno={this.state.contactno} onChange={this.inputContactnoChangeHandler} />
                                 <FormHelperText className={this.state.contactNoRequired}>
-                                     {this.state.validContactNo === true && <span className="red">required</span>}
-                                     {this.state.validContactNo === false && <span className="red">Contact No. must contain only numbers and must be 10 digits long</span>}  
+                                    {this.state.validContactNo === true && <span className="red">required</span>}
+                                    {this.state.validContactNo === false && <span className="red">Contact No. must contain only numbers and must be 10 digits long</span>}
                                 </FormHelperText>
                             </FormControl> <br /> <br />
                             <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="password"> Password</InputLabel>
                                 <Input id="password" type="password" password={this.state.password} onChange={this.inputPasswordChangeHandler} />
                                 <FormHelperText className={this.state.passwordRequired}>
-                                    {this.state.validPassword === true && 
-                                         <span className="red">required</span>
+                                    {this.state.validPassword === true &&
+                                        <span className="red">required</span>
                                     }
-                                    {this.state.validPassword === false && 
-                                         <span className="red">Password must contain at least one capital letter, one small letter, one number, and one special character</span>
+                                    {this.state.validPassword === false &&
+                                        <span className="red">Password must contain at least one capital letter, one small letter, one number, and one special character</span>
                                     }
                                 </FormHelperText>
                             </FormControl> <br /> <br />
+                            {Utils.isUndefinedOrNullOrEmpty(this.state.signupErrorMsg) ?
+                                null : (
+                                    <div className="error-msg">{this.state.signupErrorMsg}</div>
+                                )}
                             <Button variant="contained" color="primary" onClick={this.signupClickHandler} className={classes.loginButton}> SIGNUP
                             </Button>
                         </TabContainer>
                     }
                 </Modal>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    autoHideDuration={6000}
+                    ContentProps={{
+                        'aria-describedby': 'message-id'
+                    }}
+                    message={<span id="message-id"> Registered successfully! Please login now!</span>}
+                />
             </div>
-            </MuiThemeProvider>
         )
     }
 }
 
-Header.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
 export default withStyles(styles)(Header);

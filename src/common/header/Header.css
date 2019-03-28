@@ -23,7 +23,6 @@
 }
 
 .input {
-
     width: 300px;
     color: white;
 }
@@ -46,5 +45,5 @@
 }
 
 .red {
-    color: darkred;
+    color: #be4a47;
 }
