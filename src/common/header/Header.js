@@ -28,6 +28,10 @@ const styles = {
             borderBottom: '1px solid white',
         },
     },
+    button: {
+        color: '#fff',
+        textTransform: 'none'
+    },
     formControl: {
         width: "80%"
     },
@@ -83,7 +87,8 @@ class Header extends Component {
             open: false,
             signupErrorMsg: "",
             loginErrorMsg: "",
-            successMessage: ""
+            successMessage: "",
+            username: ""
         };
     }
     openModalHandler = () => {
@@ -141,8 +146,9 @@ class Header extends Component {
                 if (this.status === 200) {
                     that.setState({
                         open: true,
-                        successMessage: "Logged in successfully!"
-                    })
+                        successMessage: "Logged in successfully!",
+                        username: data.first_name
+                    });
                     sessionStorage.setItem('access-token', this.getResponseHeader('access-token'));
                     that.closeModalHandler();
                 }
@@ -194,9 +200,9 @@ class Header extends Component {
                 if (this.status === 201) {
                     that.setState({
                         open: true,
-                        successMessage: "Registered successfully! Please login now!"
+                        successMessage: "Registered successfully! Please login now!",
                     })
-                    that.tabChangeHandler("" , 0);
+                    that.tabChangeHandler("", 0);
                 }
                 else if (this.status === 400) {
                     that.setState({
@@ -300,6 +306,9 @@ class Header extends Component {
             email: e.target.value
         })
     }
+    openMenuItems = () => {
+        console.log("open menu items")
+    }
 
     render() {
         const { classes } = this.props;
@@ -326,12 +335,22 @@ class Header extends Component {
                         />
                     </div>
                     <div className="login-button">
-                        <Button variant="contained" color="default" onClick={this.openModalHandler} >
-                            <SvgIcon>
-                                <AccountCircle />
-                            </SvgIcon>
-                            <span className="login-spacing">Login</span>
-                        </Button>
+                        {this.state.username !== "" &&
+                            <Button onClick={this.openMenuItems} className={classes.button}>
+                                <SvgIcon>
+                                    <AccountCircle />
+                                </SvgIcon>
+                                <span className="login-spacing"> {this.state.username} </span>
+                            </Button>
+                        }
+                        {this.state.username === "" &&
+                            <Button variant="contained" color="default" onClick={this.openModalHandler}>
+                                <SvgIcon>
+                                    <AccountCircle />
+                                </SvgIcon>
+                                <span className="login-spacing"> LOGIN </span>
+                            </Button>
+                        }
                     </div>
                 </header>
                 <Modal ariaHideApp={false}
@@ -443,5 +462,6 @@ class Header extends Component {
         )
     }
 }
+
 
 export default withStyles(styles)(Header);
