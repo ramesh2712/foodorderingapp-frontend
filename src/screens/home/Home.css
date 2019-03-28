@@ -1,0 +1,35 @@
+.flex-container{
+    display : flex;
+}
+
+.left{
+    width : 100%;
+}
+.cardheader{
+    font-size: 18px;
+}
+
+.card-poster {
+    height: auto;
+    width: 100%;
+    margin: auto;
+}
+
+.cardStyle1 {
+    width: 500px;
+    margin: auto;
+    text-align: left;
+    justify-content:'space-between';
+    padding: 7px;
+}
+.yellow{
+    width: 100px;
+    margin: 10;
+    padding: 8px;
+    background: rgb(241, 199, 10);
+}
+.rightAlign{
+    position:relative;
+   
+    left: 100px;
+}
