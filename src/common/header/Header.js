@@ -329,6 +329,9 @@ class Header extends Component {
 
     openProfilePageHandler = () => {
         this.closeMenuItemsHandler();
+        this.props.history.push({
+            pathname: "/profile"
+          });
     }
 
     logoutHandler = () => {
@@ -353,6 +356,9 @@ class Header extends Component {
                 console.log(this.status)
                 if (this.status === 200) {
                     sessionStorage.removeItem('access-token');
+                    that.props.history.push({
+                        pathname: "/"
+                      });
                 }
                 else if (this.status === 401) {
                     that.setState({
