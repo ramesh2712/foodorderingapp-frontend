@@ -22,6 +22,7 @@ const styles = {
     cardContent: {
         margin: 'auto',
         maxWidth: 240,
+        height: 180
     },
     star: {
         color: 'white',
