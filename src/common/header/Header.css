@@ -1,0 +1,66 @@
+.app-header {
+    background-color: #243237;
+    display: flex;
+    height: 36px;
+    padding: 8px 16px 8px 8px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-spacing {
+    margin-left: 5px;
+}
+
+.app-logo {
+    color: white;
+    margin: 5px;
+}
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: white;
+}
+.search-icon {
+    color: white
+}
+
+.input {
+    width: 300px;
+    color: white;
+}
+
+.search {
+    padding-bottom: 5px;
+    color: white;
+}
+
+.tabs {
+    margin-bottom: 20px
+}
+
+.dispNone {
+    display: none;
+}
+
+.dispBlock {
+    display: block;
+}
+
+.red {
+    color: #be4a47;
+}
+
+.user-profile-drop-down {
+    position: absolute;
+    right: 16px;
+    background: lightgray;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 3px;
+    display: block;
+    color: black;
+  }
+  
+.my-account-dropdown-menu-item, .logout-dropdown-menu-item {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+  }
