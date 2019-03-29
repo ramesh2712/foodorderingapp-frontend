@@ -8,6 +8,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import Star from '@material-ui/icons/Star';
 
 const styles = {
     card: {
@@ -20,7 +21,13 @@ const styles = {
     },
     cardContent: {
         margin: 'auto',
-        width: 240,
+        maxWidth: 240,
+    },
+    star: {
+        color: 'white',
+    },
+    rating: {
+        color: 'white',
     }
   };
 
@@ -76,6 +83,15 @@ class Home extends Component {
                                    <Typography component="p">
                                      {restaurant.restaurants[0].categories}
                                   </Typography>
+                                  <div className="rating-container ">
+                                     <Star className={classes.star}/>
+                                    <Typography className={classes.rating}>
+                                         <span>{restaurant.restaurants[0].customer_rating}</span>
+                                    </Typography>
+                                    <Typography className={classes.rating}>
+                                         <span>{"(" + restaurant.restaurants[0].number_customers_rated + ")"}</span>
+                                    </Typography>
+                                  </div>
                                 </CardContent>
                             </CardActionArea>
                         </Card>

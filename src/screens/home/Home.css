@@ -8,3 +8,13 @@
 .flex-container>div {
     margin: 16px;
 }
+
+.rating-container {
+    background: #ebcb6d;
+    width: 40%;
+    padding: 4px;
+    display: flex;
+    color: white;
+    justify-content: space-around;
+    align-items: center;
+}
