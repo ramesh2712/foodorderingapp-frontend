@@ -47,3 +47,20 @@
 .red {
     color: #be4a47;
 }
+
+.user-profile-drop-down {
+    position: absolute;
+    right: 16px;
+    background: lightgray;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 3px;
+    display: block;
+    color: black;
+  }
+  
+.my-account-dropdown-menu-item, .logout-dropdown-menu-item {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+  }

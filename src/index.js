@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Home from './screens/home/Home';
 import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto';
+import Controller from "./screens/Controller";
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';  
 
 const theme = createMuiTheme({
@@ -21,7 +21,7 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
      <MuiThemeProvider theme = { theme }>
-      <Home />
+      <Controller />
     </MuiThemeProvider>,
     document.getElementById('root')
 );

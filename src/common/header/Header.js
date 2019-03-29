@@ -17,6 +17,9 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Snackbar from '@material-ui/core/Snackbar';
+import { Link } from "react-router-dom";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styles = {
     root: {
@@ -36,6 +39,9 @@ const styles = {
         width: "80%"
     },
     loginButton: {
+        marginTop: 30
+    },
+    menuItems: {
         marginTop: 30
     }
 }
@@ -88,7 +94,9 @@ class Header extends Component {
             signupErrorMsg: "",
             loginErrorMsg: "",
             successMessage: "",
-            username: ""
+            username: "",
+            showUserProfileDropDown: false,
+            anchorEl: null
         };
     }
     openModalHandler = () => {
@@ -306,12 +314,22 @@ class Header extends Component {
             email: e.target.value
         })
     }
-    openMenuItems = () => {
-        console.log("open menu items")
+    openMenuItemsHandler = (event) => {
+        this.setState({
+            showUserProfileDropDown: true
+        });
+        console.log(event.currentTarget)
+        this.setState({anchorEl: event.currentTarget})
     }
-
+    closeMenuItemsHandler = () => {
+        this.setState({
+            showUserProfileDropDown: false
+        });
+        this.setState({ anchorEl: null})
+    }
     render() {
         const { classes } = this.props;
+        const { anchorEl } = this.state;
 
         return (
             <div>
@@ -336,7 +354,10 @@ class Header extends Component {
                     </div>
                     <div className="login-button">
                         {this.state.username !== "" &&
-                            <Button onClick={this.openMenuItems} className={classes.button}>
+                            <Button onClick={this.openMenuItemsHandler} 
+                                    className={classes.button}
+                                    aria-owns={anchorEl ? 'simple-menu' : undefined}
+                                    aria-haspopup="true">
                                 <SvgIcon>
                                     <AccountCircle />
                                 </SvgIcon>
@@ -351,6 +372,32 @@ class Header extends Component {
                                 <span className="login-spacing"> LOGIN </span>
                             </Button>
                         }
+                        {this.state.showUserProfileDropDown ? (
+                            <Menu className={classes.menuItems}
+                                  id="simple-menu"
+                                  anchorEl={anchorEl}
+                                  open={Boolean(anchorEl)}
+                                  onClose={this.handleClose}
+                             >
+                                <MenuItem onClick={this.closeMenuItemsHandler}>My Profile</MenuItem>
+                                <MenuItem onClick={this.closeMenuItemsHandler}>Logout</MenuItem>
+                            </Menu>
+                            /*
+                            <div className="user-profile-drop-down">
+                                <div>
+                                    <Link to="/profile" className="my-account-dropdown-menu-item">
+                                        My Profile
+                                    </Link>
+                                    <hr />
+                                </div>
+                                <div
+                                    onClick={this.logoutClickHandler}
+                                    className="logout-dropdown-menu-item">
+                                    Logout
+                                </div>
+                            </div>*/
+
+                        ) : null}
                     </div>
                 </header>
                 <Modal ariaHideApp={false}
