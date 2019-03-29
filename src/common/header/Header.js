@@ -318,7 +318,6 @@ class Header extends Component {
         this.setState({
             showUserProfileDropDown: true
         });
-        console.log(event.currentTarget)
         this.setState({anchorEl: event.currentTarget})
     }
     closeMenuItemsHandler = () => {
@@ -326,6 +325,46 @@ class Header extends Component {
             showUserProfileDropDown: false
         });
         this.setState({ anchorEl: null})
+    }
+
+    openProfilePageHandler = () => {
+        this.closeMenuItemsHandler();
+    }
+
+    logoutHandler = () => {
+        this.closeMenuItemsHandler();
+        this.setState({
+            showUserProfileDropDown: false,
+            username: ""
+        });
+        this.callApiForLogout()
+
+    }
+    callApiForLogout = () => {
+        console.log("log-out api started")
+        let xhrPosts = new XMLHttpRequest();
+        let that = this
+
+        xhrPosts.addEventListener("readystatechange", function () {
+
+            if (this.readyState === 4) {
+                var data = JSON.parse(this.responseText)
+                console.log(this.responseText);
+                console.log(this.status)
+                if (this.status === 200) {
+                    sessionStorage.removeItem('access-token');
+                }
+                else if (this.status === 401) {
+                    that.setState({
+                        loginErrorMsg: data.message
+                    })
+                }
+            }
+        });
+        xhrPosts.open("POST", this.baseUrl + "/customer/logout");
+        xhrPosts.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        xhrPosts.setRequestHeader('authorization', sessionStorage.getItem('access-token'));
+        xhrPosts.send();
     }
     render() {
         const { classes } = this.props;
@@ -377,26 +416,11 @@ class Header extends Component {
                                   id="simple-menu"
                                   anchorEl={anchorEl}
                                   open={Boolean(anchorEl)}
-                                  onClose={this.handleClose}
+                                  onClose={this.closeMenuItemsHandler}
                              >
-                                <MenuItem onClick={this.closeMenuItemsHandler}>My Profile</MenuItem>
-                                <MenuItem onClick={this.closeMenuItemsHandler}>Logout</MenuItem>
+                                <MenuItem onClick={this.openProfilePageHandler}>My Profile</MenuItem>
+                                <MenuItem onClick={this.logoutHandler}>Logout</MenuItem>
                             </Menu>
-                            /*
-                            <div className="user-profile-drop-down">
-                                <div>
-                                    <Link to="/profile" className="my-account-dropdown-menu-item">
-                                        My Profile
-                                    </Link>
-                                    <hr />
-                                </div>
-                                <div
-                                    onClick={this.logoutClickHandler}
-                                    className="logout-dropdown-menu-item">
-                                    Logout
-                                </div>
-                            </div>*/
-
                         ) : null}
                     </div>
                 </header>
