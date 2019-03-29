@@ -9,12 +9,23 @@
     margin: 16px;
 }
 
+.rating-price-container {
+    display: flex;
+    justify-content: space-between;
+}
 .rating-container {
     background: #ebcb6d;
     width: 40%;
-    padding: 4px;
-    display: flex;
+    padding: 5px;
     color: white;
+    display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+.price-container {
+    float: left;
+    align-items: center;
+    padding: 5px;
+
 }

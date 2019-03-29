@@ -12,12 +12,12 @@ import Star from '@material-ui/icons/Star';
 
 const styles = {
     card: {
-      maxWidth: 300,
-      height: 'auto',
+        maxWidth: 300,
+        height: 'auto',
     },
     media: {
-      height: 140,
-      width: '100%',
+        height: 140,
+        width: '100%',
     },
     cardContent: {
         margin: 'auto',
@@ -29,7 +29,7 @@ const styles = {
     rating: {
         color: 'white',
     }
-  };
+};
 
 class Home extends Component {
 
@@ -63,7 +63,7 @@ class Home extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const { classes } = this.props;
         return (
             <div>
                 <Header history={this.props.history} />
@@ -72,26 +72,33 @@ class Home extends Component {
                         <Card className={this.props.card} key={restaurant.restaurants[0].id}>
                             <CardActionArea>
                                 <CardMedia
-                                 className={classes.media}
-                                 image={restaurant.restaurants[0].photo_URL}
-                                 title={restaurant.restaurants[0].restaurant_name}
+                                    className={classes.media}
+                                    image={restaurant.restaurants[0].photo_URL}
+                                    title={restaurant.restaurants[0].restaurant_name}
                                 />
                                 <CardContent className={classes.cardContent}>
-                                   <Typography gutterBottom variant="h5" component="h2">
-                                      {restaurant.restaurants[0].restaurant_name}
-                                   </Typography> <br/><br/>
-                                   <Typography component="p">
-                                     {restaurant.restaurants[0].categories}
-                                  </Typography>
-                                  <div className="rating-container ">
-                                     <Star className={classes.star}/>
-                                    <Typography className={classes.rating}>
-                                         <span>{restaurant.restaurants[0].customer_rating}</span>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        {restaurant.restaurants[0].restaurant_name}
+                                    </Typography> <br /><br />
+                                    <Typography component="p">
+                                        {restaurant.restaurants[0].categories}
                                     </Typography>
-                                    <Typography className={classes.rating}>
-                                         <span>{"(" + restaurant.restaurants[0].number_customers_rated + ")"}</span>
-                                    </Typography>
-                                  </div>
+                                    <div className="rating-price-container">
+                                        <div className="rating-container">
+                                            <Star className={classes.star} />
+                                            <Typography className={classes.rating}>
+                                                <span>{restaurant.restaurants[0].customer_rating}</span>
+                                            </Typography>
+                                            <Typography className={classes.rating}>
+                                                <span>{"(" + restaurant.restaurants[0].number_customers_rated + ")"}</span>
+                                            </Typography>
+                                        </div>
+                                        <div className="price-container">
+                                            <Typography>
+                                                <span>{'\u20B9'+restaurant.restaurants[0].average_price + " for two"}</span>
+                                            </Typography>
+                                        </div>
+                                    </div>
                                 </CardContent>
                             </CardActionArea>
                         </Card>
