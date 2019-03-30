@@ -8,7 +8,11 @@
 .flex-container>div {
     margin: 16px;
 }
-
+.card-content-area {
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+}
 .rating-price-container {
     display: flex;
     justify-content: space-between;
