@@ -19,6 +19,7 @@ class Details extends Component {
         this.state = {
             restaurantDetail: {},
             locality: "",
+            categoriesList: []
         }
     }
 
@@ -36,7 +37,8 @@ class Details extends Component {
                 let data = JSON.parse(this.responseText);
                 that.setState({
                     restaurantDetail: data,
-                    locality: data.address.locality
+                    locality: data.address.locality,
+                    categoriesList: data.categories
                 });
             }
         });
@@ -105,6 +107,7 @@ class Details extends Component {
                         </div>
                     </div>
                 </div>
+
             </div>
         );
     }
