@@ -383,20 +383,22 @@ class Header extends Component {
                             <Fastfood />
                         </SvgIcon>
                     </div>
-                    <div>
-                        <Input className={classes.root}
-                            id="input-with-icon-adornment"
-                            onChange={this.props.searchByRestaurantName.bind(this)}
-                            startAdornment={
-                                <InputAdornment position="start" className="search">
-                                    <SvgIcon>
-                                        <Search />
-                                    </SvgIcon>
-                                </InputAdornment>
-                            }
-                            placeholder="Search by Restaurant Name"
-                        />
-                    </div>
+                    {this.props.showSearchArea === true &&
+                        <div>
+                         <Input className={classes.root}
+                             id="input-with-icon-adornment"
+                             onChange={this.props.searchByRestaurantName.bind(this)}
+                             startAdornment={
+                                 <InputAdornment position="start" className="search">
+                                     <SvgIcon>
+                                         <Search />
+                                     </SvgIcon>
+                                 </InputAdornment>
+                             }
+                             placeholder="Search by Restaurant Name"
+                         />
+                        </div>
+                    }
                     <div className="login-button">
                         {this.state.username !== "" &&
                             <Button onClick={this.openMenuItemsHandler} 

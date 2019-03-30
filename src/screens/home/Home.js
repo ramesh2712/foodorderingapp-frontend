@@ -88,6 +88,10 @@ class Home extends Component {
     };
     cardClickedHandler = (restaurant_id) => {
         console.log(restaurant_id);
+        
+        this.props.history.push({
+            pathname: "/restaurant/" + restaurant_id
+        })
     }
 
     render() {
@@ -101,7 +105,8 @@ class Home extends Component {
         return (
             <div>
                 <Header history={this.props.history} 
-                        searchByRestaurantName={this.searchByRestaurantName}/>
+                        searchByRestaurantName={this.searchByRestaurantName}
+                        showSearchArea={true}/>
                 <div className="flex-container">
                     {dataSource.map(restaurant => (
                         <Card className={this.props.card} key={restaurant.restaurants[0].id}>
