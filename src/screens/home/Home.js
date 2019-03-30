@@ -63,6 +63,10 @@ class Home extends Component {
         xhrPosts.send();
     }
 
+    cardClickedHandler = (restaurant_id) => {
+        console.log(restaurant_id);
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -71,7 +75,7 @@ class Home extends Component {
                 <div className="flex-container">
                     {this.state.restaurantData.map(restaurant => (
                         <Card className={this.props.card} key={restaurant.restaurants[0].id}>
-                            <CardActionArea>
+                            <CardActionArea onClick={this.cardClickedHandler.bind(this,restaurant.restaurants[0].id)}>
                                 <CardMedia
                                     className={classes.media}
                                     image={restaurant.restaurants[0].photo_URL}
