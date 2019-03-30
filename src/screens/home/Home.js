@@ -86,11 +86,12 @@ class Home extends Component {
             this.setState({ currentSearchValue: searchValue });
         }
     };
-    cardClickedHandler = (restaurant_id) => {
+    cardClickedHandler = (restaurant_id ,restaurant_categories) => {
         console.log(restaurant_id);
         
         this.props.history.push({
-            pathname: "/restaurant/" + restaurant_id
+            pathname: "/restaurant/" + restaurant_id,
+            categories: restaurant_categories
         })
     }
 
@@ -110,7 +111,7 @@ class Home extends Component {
                 <div className="flex-container">
                     {dataSource.map(restaurant => (
                         <Card className={this.props.card} key={restaurant.restaurants[0].id}>
-                            <CardActionArea onClick={this.cardClickedHandler.bind(this, restaurant.restaurants[0].id)}>
+                            <CardActionArea onClick={this.cardClickedHandler.bind(this, restaurant.restaurants[0].id , restaurant.restaurants[0].categories)}>
                                 <CardMedia
                                     className={classes.media}
                                     image={restaurant.restaurants[0].photo_URL}
