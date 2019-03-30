@@ -17,6 +17,26 @@ class Details extends Component {
         }
     }
 
+    componentWillMount = () => {
+        this.callApiToGetResturantDetail()
+    }
+    callApiToGetResturantDetail = () => {
+        let restaurant_id = this.props.match.params.id;
+        console.log(restaurant_id)
+
+        let xhrPosts = new XMLHttpRequest();
+        let that = this
+
+        xhrPosts.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(JSON.parse(this.responseText));
+                let data = JSON.parse(this.responseText);
+            }
+        });
+        xhrPosts.open("GET", this.props.baseUrl + "/restaurant/"+restaurant_id);
+        xhrPosts.send();
+    }
+
     render(){
         return(
             <div>
