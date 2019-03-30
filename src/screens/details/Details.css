@@ -64,7 +64,7 @@
 }
 
 .rating-details-container {
-    width: 20%;
+    width: 35%;
     margin-top: 5px;
     margin-left: 15px;
 }
@@ -81,11 +81,16 @@
 .avg-rating {
     color: gray;
     text-transform: uppercase;
-    margin-left: 5px;
     margin-top: 4px;
     font-size: 12px;
 }
 
 .customer-rating {
     font-weight: bolder;
+}
+.count-container {
+    display: flex;
+}
+.data-container {
+    width: 50%;
 }

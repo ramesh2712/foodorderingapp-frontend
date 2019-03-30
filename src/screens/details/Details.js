@@ -79,15 +79,29 @@ class Details extends Component {
                                     {this.props.location.categories}
                                 </div>
                             </div>
-                            <div className="rating-details-container">
-                                <div className="rating-details">
-                                    <Star className={classes.star} />
-                                    <div className="rating-rr">{this.state.restaurantDetail.customer_rating}</div>
+                            <div className="count-container">
+                            <div className="data-container">
+                                <div className="rating-details-container">
+                                    <div className="rating-details">
+                                        <Star className={classes.star} />
+                                        <div className="rating-rr">{this.state.restaurantDetail.customer_rating}</div>
+                                    </div>
+                                    <div className="avg-rating">
+                                        AVERAGE RATING BY  <span className="customer-rating">{this.state.restaurantDetail.number_customers_rated}</span>  CUSTOMERS
+                                    </div>
                                 </div>
-                                <div className="avg-rating">
-                                    AVERAGE RATING BY  <span className="customer-rating">{this.state.restaurantDetail.number_customers_rated}</span>  CUSTOMERS
+                            </div>
+                            <div className="data-container">
+                                <div className="rating-details-container">
+                                     <div className="rating-details"> 
+                                            { '\u20B9' + this.state.restaurantDetail.average_price}
+                                     </div>
+                                     <div className="avg-rating">
+                                        AVERAGE COST PER TWO PERSON
+                                    </div>
                                 </div>
-                            </div >
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>
