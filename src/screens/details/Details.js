@@ -19,9 +19,6 @@ class Details extends Component {
         this.state = {
             restaurantDetail: {},
             locality: "",
-            customer_rating: 0,
-            number_customer_rating: 0,
-            average_price: 0
         }
     }
 
@@ -38,15 +35,9 @@ class Details extends Component {
             if (this.readyState === 4) {
                 let data = JSON.parse(this.responseText);
                 that.setState({
-                    restaurantDetail: data
+                    restaurantDetail: data,
+                    locality: data.address.locality
                 });
-                that.setState({
-                    locality:data.address.locality,
-                    customer_rating: data.address.customer_rating,
-                    number_customer_rating: data.address.number_customers_rated,
-                    average_price: data.address.average_price
-                })
-                console.log(that.state.customer_rating);
             }
         });
 
@@ -91,10 +82,10 @@ class Details extends Component {
                             <div className="rating-details-container">
                                 <div className="rating-details">
                                     <Star className={classes.star} />
-                                    <div className="rating-rr">4.4</div>
+                                    <div className="rating-rr">{this.state.restaurantDetail.customer_rating}</div>
                                 </div>
                                 <div className="avg-rating">
-                                    AVERAGE RATING BY  <span className="customer-rating">2344</span>  CUSTOMERS
+                                    AVERAGE RATING BY  <span className="customer-rating">{this.state.restaurantDetail.number_customers_rated}</span>  CUSTOMERS
                                 </div>
                             </div >
                         </div>
