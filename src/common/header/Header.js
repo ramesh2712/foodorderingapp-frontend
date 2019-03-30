@@ -386,6 +386,7 @@ class Header extends Component {
                     <div>
                         <Input className={classes.root}
                             id="input-with-icon-adornment"
+                            onChange={this.props.searchByRestaurantName.bind(this)}
                             startAdornment={
                                 <InputAdornment position="start" className="search">
                                     <SvgIcon>
