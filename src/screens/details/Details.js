@@ -5,11 +5,19 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Header from '../../common/header/Header';
 import Star from '@material-ui/icons/Star';
+import Divider from '@material-ui/core/Divider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import IconButton from '@material-ui/core/IconButton';
+import Add from '@material-ui/icons/Add';
 
 const styles = {
     star: {
         color: 'black',
-    }
+    },
+    icon: {
+        margin: 10
+      },
 };
 
 class Details extends Component {
@@ -107,7 +115,49 @@ class Details extends Component {
                         </div>
                     </div>
                 </div>
-
+                <div className="menu-cart-container">
+                     <div className="menu-items-container">
+                      {
+                        this.state.categoriesList.map(category => (
+                            <div>
+                                <div className="category-name-container">
+                                    {category.category_name}
+                                </div>
+                                <div className="divider-line">
+                                    <Divider variant='fullWidth'/>
+                                </div>
+                                {category.item_list.map(item => (
+                                    <div className="item-container ">
+                                        <div className="item-info">
+                                            {
+                                                item.item_type === "NON_VEG" && 
+                                                <FontAwesomeIcon icon={faCircle} className="non-veg"/>
+                                            }
+                                            {
+                                                 item.item_type === "VEG" && 
+                                                 <FontAwesomeIcon icon={faCircle} className="veg"/>
+                                            }
+                                            {item.item_name}
+                                        </div>
+                                        <div className="price-info">
+                                             <span className="spacing">
+                                                {'\u20B9' + parseFloat(Math.round(item.price * 100) / 100).toFixed(2)}
+                                            </span> 
+                                            <IconButton >
+                                                 <Add />
+                                            </IconButton>
+                                        </div>
+                                    </div>
+                                 ))
+                                }
+                            </div>
+                        ))
+                      }
+                     </div>
+                     <div className="cart-container">
+                         Test
+                     </div>
+                </div>
             </div>
         );
     }

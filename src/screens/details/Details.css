@@ -94,3 +94,56 @@
 .data-container {
     width: 50%;
 }
+.menu-cart-container {
+    width: 100%;
+    direction: flex;
+}
+.menu-items-container {
+    width: 45%;
+    float: left;
+    padding: 10px;
+    margin: 30px;
+}
+
+.cart-container {
+    width : 45%;
+    float: right;
+}
+.category-name-container {
+   color: gray;
+   text-transform: uppercase;
+   padding: 10px;
+}
+.divider-line {
+    padding: 5px;
+}
+
+.item-container {
+    display: flex;
+    margin: 10px;
+}
+
+.item-info{
+    align-self: center;
+    width: 100%;
+}
+
+.veg {
+    color: green;
+    margin-right: 20px;
+}
+
+.non-veg {
+    color: red;
+    margin-right: 20px;
+}
+
+.price-info {
+  width: 50%;
+}
+.spacing {
+ margin-right: 40px;
+}
+.add-button {
+    margin-left: 10px;
+}
