@@ -55,6 +55,10 @@ class Details extends Component {
         xhrPosts.send();
     }
 
+    addButtonHandler = (item_name) =>{
+        console.log(item_name)
+    }
+
     render() {
         const { classes } = this.props;
 
@@ -119,7 +123,7 @@ class Details extends Component {
                      <div className="menu-items-container">
                       {
                         this.state.categoriesList.map(category => (
-                            <div>
+                            <div key={category.id}>
                                 <div className="category-name-container">
                                     {category.category_name}
                                 </div>
@@ -127,7 +131,7 @@ class Details extends Component {
                                     <Divider variant='fullWidth'/>
                                 </div>
                                 {category.item_list.map(item => (
-                                    <div className="item-container ">
+                                    <div className="item-container" key={item.id}>
                                         <div className="item-info">
                                             {
                                                 item.item_type === "NON_VEG" && 
@@ -143,7 +147,7 @@ class Details extends Component {
                                              <span className="spacing">
                                                 {'\u20B9' + parseFloat(Math.round(item.price * 100) / 100).toFixed(2)}
                                             </span> 
-                                            <IconButton >
+                                            <IconButton onClick={this.addButtonHandler.bind(this,item.item_name)}>
                                                  <Add />
                                             </IconButton>
                                         </div>
