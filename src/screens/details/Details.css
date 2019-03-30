@@ -23,6 +23,9 @@
 
 .information-container {
     width: 60%;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .restaurant-name-container {
@@ -58,4 +61,31 @@
     font-size: 12px;
     margin-top: 8px;
     margin-left: 15px;
+}
+
+.rating-details-container {
+    width: 20%;
+    margin-top: 5px;
+    margin-left: 15px;
+}
+.rating-details {
+    color: black;
+    font: 12px;
+    display: flex;
+}
+.rating-rr {
+    align-self: center;
+    margin-top: 2px;
+    margin-left: 3px;
+}
+.avg-rating {
+    color: gray;
+    text-transform: uppercase;
+    margin-left: 5px;
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.customer-rating {
+    font-weight: bolder;
 }

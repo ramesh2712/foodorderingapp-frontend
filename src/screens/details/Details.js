@@ -4,8 +4,13 @@ import './Details.css';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Header from '../../common/header/Header';
+import Star from '@material-ui/icons/Star';
 
-const styles = {};
+const styles = {
+    star: {
+        color: 'black',
+    }
+};
 
 class Details extends Component {
 
@@ -13,7 +18,10 @@ class Details extends Component {
         super();
         this.state = {
             restaurantDetail: {},
-            locality: ""
+            locality: "",
+            customer_rating: 0,
+            number_customer_rating: 0,
+            average_price: 0
         }
     }
 
@@ -33,12 +41,12 @@ class Details extends Component {
                     restaurantDetail: data
                 });
                 that.setState({
-                    locality:data.address.locality
+                    locality:data.address.locality,
+                    customer_rating: data.address.customer_rating,
+                    number_customer_rating: data.address.number_customers_rated,
+                    average_price: data.address.average_price
                 })
-                console.log(that.state.restaurantDetail);
-                console.log(that.state.restaurantDetail.customer_rating);
-                console.log(that.state.restaurantDetail.average_price);
-                console.log(that.state.restaurantDetail.address.locality);
+                console.log(that.state.customer_rating);
             }
         });
 
@@ -47,6 +55,8 @@ class Details extends Component {
     }
 
     render() {
+        const { classes } = this.props;
+
         return (
             <div>
                 <Header
@@ -78,6 +88,15 @@ class Details extends Component {
                                     {this.props.location.categories}
                                 </div>
                             </div>
+                            <div className="rating-details-container">
+                                <div className="rating-details">
+                                    <Star className={classes.star} />
+                                    <div className="rating-rr">4.4</div>
+                                </div>
+                                <div className="avg-rating">
+                                    AVERAGE RATING BY  <span className="customer-rating">2344</span>  CUSTOMERS
+                                </div>
+                            </div >
                         </div>
                     </div>
                 </div>
