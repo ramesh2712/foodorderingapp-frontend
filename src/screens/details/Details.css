@@ -106,7 +106,9 @@
 }
 
 .cart-container {
-    width : 45%;
+    margin-top: 40px;
+    margin-right: 30px;
+    width : 40%;
     float: right;
 }
 .category-name-container {
@@ -141,6 +143,7 @@
 .price-info {
   width: 50%;
 }
+
 .spacing {
  margin-right: 50px;
 }
