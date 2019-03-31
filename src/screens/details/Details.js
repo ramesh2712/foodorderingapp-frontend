@@ -18,6 +18,7 @@ import { CardContent } from '@material-ui/core';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
+import * as Utils from "../../common/Utils";
 
 const styles = {
     star: {
@@ -88,6 +89,27 @@ class Details extends Component {
         }
         this.setState({ open: false });
     };
+    checkoutButtonHandler = () => {
+        // if item is empty 
+        /*
+        this.setState({
+            open: true,
+            successMessage: "Please add an item to your cart!"
+        })
+        */
+        // Check for Customer logged in or not ....
+        var token = sessionStorage.getItem('access-token');
+        console.log(token)
+        if (Utils.isUndefinedOrNullOrEmpty(token)){
+            this.setState({
+                open: true,
+                successMessage: "Please login first!"
+            })
+        }
+        else {
+            console.log('Go to Checkout page')
+        }
+    }
     render() {
         const { classes } = this.props;
 
@@ -206,7 +228,7 @@ class Details extends Component {
                                 </div>
                             </CardContent>
                             <CardActions>
-                                <Button variant="contained" color="primary" className={classes.button}>
+                                <Button variant="contained" color="primary" className={classes.button} onClick={this.checkoutButtonHandler}>
                                     CHECKOUT
                                 </Button>
                              </CardActions>

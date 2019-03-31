@@ -346,7 +346,7 @@ class Header extends Component {
         console.log("log-out api started")
         let xhrPosts = new XMLHttpRequest();
         let that = this
-
+        sessionStorage.removeItem('access-token');
         xhrPosts.addEventListener("readystatechange", function () {
 
             if (this.readyState === 4) {
@@ -354,7 +354,6 @@ class Header extends Component {
                 console.log(this.responseText);
                 console.log(this.status)
                 if (this.status === 200) {
-                    sessionStorage.removeItem('access-token');
                     that.props.history.push({
                         pathname: "/"
                       });
