@@ -116,15 +116,18 @@ class Details extends Component {
 
         // Calculate Quantity ...
         var totalQuantity = 0;
+        var totalAmount = 0
         for(let object of itemList){
-            totalQuantity = totalQuantity + object.quantity;
+            totalQuantity += object.quantity;
+            totalAmount += object.quantity * object.price;
         }
 
         this.setState({
             open: true,
             successMessage: "Item added to cart!",
             addedItemsLists: itemList,
-            totalNumberOfItems:totalQuantity
+            totalNumberOfItems:totalQuantity,
+            totalPrice:totalAmount
         })
     }
     handleClose = (event, reason) => {
