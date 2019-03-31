@@ -173,6 +173,8 @@
     border: none;
     height: 25px;
     width: 25px;
+    cursor: pointer;
+    outline: none;
 }
 
 .item-list {

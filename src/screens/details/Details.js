@@ -52,7 +52,8 @@ class Details extends Component {
             open: false,
             successMessage: "",
             totalNumberOfItems: 0,
-            totalPrice: 0
+            totalPrice: 0,
+            addedItemsLists: []
         }
     }
 
@@ -81,11 +82,103 @@ class Details extends Component {
         xhrPosts.send();
     }
 
-    addButtonHandler = (item_name) =>{
-        console.log(item_name)
+    addButtonHandler = (item) =>{
+        console.log(item)
+        let itemList = this.state.addedItemsLists.slice();
+        var found = false;
+        for (let itemObj of this.state.addedItemsLists){
+            if (itemObj.id === item.id){
+                found =  true;
+                break;
+            }
+        }
+
+        if(found === false){
+            var item_detail = {};
+            item_detail.id = item.id;
+            item_detail.item_name = item.item_name;
+            item_detail.price = item.price;
+            item_detail.item_type = item.item_type;
+            item_detail.quantity = 1;
+            itemList.push(item_detail);
+        }
+        else {
+            for (let itemObj of this.state.addedItemsLists){
+                let itemNode = itemObj;
+                if (itemObj.id === item.id){
+                     itemNode.quantity = itemNode.quantity + 1;
+                     var foundIndex = itemList.findIndex(x => x.id === item.id);
+                     itemList[foundIndex] = itemNode;
+                }
+            }
+        }
+
+        this.setState({
+            addedItemsLists: itemList
+        });
+        /*
+        var itemList = this.state.addedItemsLists;
+        var item_detail = {};
+            item_detail.id = item.id;
+            item_detail.item_name = item.item_name;
+            item_detail.price = item.price;
+            item_detail.item_type = item.item_type;
+            item_detail.quantity = 1;
+            itemList.push(item_detail);
+
+        let updatedItem = itemList.find((element) => { return element.id === item.id })
+        console.log(updatedItem)
+        */
+        /*
+        if(updatedItem){
+            updatedItem.quantity = item.quantity + 1
+            console.log(updatedItem)
+        }
+        else {
+            var item_detail = {};
+            item_detail.id = item.id;
+            item_detail.item_name = item.item_name;
+            item_detail.price = item.price;
+            item_detail.item_type = item.item_type;
+            item_detail.quantity = 1;
+            itemList.push(item_detail);
+        }
+        */
+        /*
+        var isItemExist = false;
+        for (let itemObj in itemList){
+            if(itemObj.id === item.id){
+                console.log("item exist")
+                isItemExist = true;
+                break;
+            }
+        }
+
+        if (isItemExist === false) {
+            var item_detail = {};
+            item_detail.id = item.id;
+            item_detail.item_name = item.item_name;
+            item_detail.price = item.price;
+            item_detail.item_type = item.item_type;
+            item_detail.quantity = 1;
+            itemList.push(item_detail);
+        }
+        else {
+            if(itemList.length > 0){
+                itemList.forEach((element, index) => {
+                   if(element.id === item.id) {
+                       item.quantity = item.quantity + 1;
+                       itemList[index] = item;
+                   }
+                });
+               }
+        }*/
+        
+        
         this.setState({
             open: true,
-            successMessage: "Item added to cart!"
+            successMessage: "Item added to cart!",
+            addedItemsLists: itemList
         })
     }
     handleClose = (event, reason) => {
@@ -179,7 +272,7 @@ class Details extends Component {
                      <div className="menu-items-container">
                       {
                         this.state.categoriesList.map(category => (
-                            <div key={category.id}>
+                            <div key={"category-"+category.id}>
                                 <div className="category-name-container">
                                     {category.category_name}
                                 </div>
@@ -187,7 +280,7 @@ class Details extends Component {
                                     <Divider variant='fullWidth'/>
                                 </div>
                                 {category.item_list.map(item => (
-                                    <div className="item-container" key={item.id}>
+                                    <div className="item-container" key={"item-"+item.id}>
                                         <div className="item-info">
                                             {
                                                 item.item_type === "NON_VEG" && 
@@ -203,10 +296,9 @@ class Details extends Component {
                                              <span className="spacing">
                                                 {'\u20B9' + parseFloat(Math.round(item.price * 100) / 100).toFixed(2)}
                                             </span> 
-                                            <IconButton onClick={this.addButtonHandler.bind(this,item.item_name)}>
+                                            <IconButton onClick={this.addButtonHandler.bind(this,item)}>
                                                  <Add />
                                             </IconButton>
-                                            
                                         </div>
                                     </div>
                                  ))
@@ -227,27 +319,28 @@ class Details extends Component {
                                   </Badge> 
                                   <span className="my-cart"> My Cart</span>
                                 </div>
-                                
-                                 <div className="item-list">
-                                     <FontAwesomeIcon icon={faStopCircle} className="non-veg"/>
-                                     <span className="added-item-name"> Hakka noodles </span>
-                                          <button className="button-size"> - </button>
-                                          <span className="quantity-label"> 10 </span>
-                                          <button className="button-size"> + </button>
-                                     <span className="price-label"> {'\u20B9' + parseFloat(Math.round(255 * 100) / 100).toFixed(2)} </span>
-                                 </div>
-                                 <div className="item-list">
-                                     <FontAwesomeIcon icon={faStopCircle} className="non-veg"/>
-                                     <span className="added-item-name"> Hakka noodles </span>
-                                     <button className="button-size"> - </button>
-                                     <span className="quantity-label"> 10 </span>
-                                     <button className="button-size"> + </button>
-                                     <span className="price-label"> {'\u20B9' + parseFloat(Math.round(10 * 100) / 100).toFixed(2)} </span>
-                                 </div>
-                                
+                                {
+                                    this.state.addedItemsLists.map( item => (
+                                       <div className="item-list" key={"item"+ item.id}>
+                                         { 
+                                             item.item_type === "NON_VEG" &&
+                                             <FontAwesomeIcon icon={faStopCircle} className="non-veg"/>
+                                         }
+                                         {
+                                             item.item_type === "VEG" &&
+                                             <FontAwesomeIcon icon={faStopCircle} className="veg"/>
+                                         }
+                                         <span className="added-item-name"> {item.item_name} </span>
+                                             <button className="button-size"> - </button>
+                                             <span className="quantity-label"> {item.quantity} </span>
+                                             <button className="button-size"> + </button>
+                                         <span className="price-label"> {'\u20B9' + parseFloat(Math.round(item.price * item.quantity * 100) / 100).toFixed(2)} </span>
+                                        </div>
+                                    ))
+                                }
                                 <div className="total-amount-section">
                                     <span> TOTAL AMOUNT </span>
-                                    <span className="total-amount"> {'\u20B9' + parseFloat(Math.round(this.state.totalNumberOfItems * 100) / 100).toFixed(2)} </span>
+                                    <span className="total-amount"> {'\u20B9' + parseFloat(Math.round(this.state.totalPrice * 100) / 100).toFixed(2)} </span>
                                 </div>
                             </CardContent>
                             <CardActions>
