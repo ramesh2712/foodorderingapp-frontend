@@ -83,7 +83,8 @@ class Details extends Component {
     }
 
     addButtonHandler = (item) =>{
-        console.log(item)
+
+        // Add items into Cart .....
         let itemList = this.state.addedItemsLists.slice();
         var found = false;
         for (let itemObj of this.state.addedItemsLists){
@@ -113,72 +114,17 @@ class Details extends Component {
             }
         }
 
-        this.setState({
-            addedItemsLists: itemList
-        });
-        /*
-        var itemList = this.state.addedItemsLists;
-        var item_detail = {};
-            item_detail.id = item.id;
-            item_detail.item_name = item.item_name;
-            item_detail.price = item.price;
-            item_detail.item_type = item.item_type;
-            item_detail.quantity = 1;
-            itemList.push(item_detail);
-
-        let updatedItem = itemList.find((element) => { return element.id === item.id })
-        console.log(updatedItem)
-        */
-        /*
-        if(updatedItem){
-            updatedItem.quantity = item.quantity + 1
-            console.log(updatedItem)
-        }
-        else {
-            var item_detail = {};
-            item_detail.id = item.id;
-            item_detail.item_name = item.item_name;
-            item_detail.price = item.price;
-            item_detail.item_type = item.item_type;
-            item_detail.quantity = 1;
-            itemList.push(item_detail);
-        }
-        */
-        /*
-        var isItemExist = false;
-        for (let itemObj in itemList){
-            if(itemObj.id === item.id){
-                console.log("item exist")
-                isItemExist = true;
-                break;
-            }
+        // Calculate Quantity ...
+        var totalQuantity = 0;
+        for(let object of itemList){
+            totalQuantity = totalQuantity + object.quantity;
         }
 
-        if (isItemExist === false) {
-            var item_detail = {};
-            item_detail.id = item.id;
-            item_detail.item_name = item.item_name;
-            item_detail.price = item.price;
-            item_detail.item_type = item.item_type;
-            item_detail.quantity = 1;
-            itemList.push(item_detail);
-        }
-        else {
-            if(itemList.length > 0){
-                itemList.forEach((element, index) => {
-                   if(element.id === item.id) {
-                       item.quantity = item.quantity + 1;
-                       itemList[index] = item;
-                   }
-                });
-               }
-        }*/
-        
-        
         this.setState({
             open: true,
             successMessage: "Item added to cart!",
-            addedItemsLists: itemList
+            addedItemsLists: itemList,
+            totalNumberOfItems:totalQuantity
         })
     }
     handleClose = (event, reason) => {
