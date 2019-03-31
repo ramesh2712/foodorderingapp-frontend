@@ -19,6 +19,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import * as Utils from "../../common/Utils";
+import {faStopCircle } from '@fortawesome/free-regular-svg-icons';
 
 const styles = {
     star: {
@@ -35,6 +36,9 @@ const styles = {
     button :{
         width : '100%'
     },
+    button1 : {
+        width: '10%'
+    }
 };
 
 class Details extends Component {
@@ -55,6 +59,7 @@ class Details extends Component {
     componentWillMount = () => {
         this.callApiToGetResturantDetail()
     }
+    
     callApiToGetResturantDetail = () => {
         let restaurant_id = this.props.match.params.id;
         console.log(this.props.location.categories);
@@ -222,9 +227,27 @@ class Details extends Component {
                                   </Badge> 
                                   <span className="my-cart"> My Cart</span>
                                 </div>
+                                
+                                 <div className="item-list">
+                                     <FontAwesomeIcon icon={faStopCircle} className="non-veg"/>
+                                     <span className="added-item-name"> Hakka noodles </span>
+                                          <button className="button-size"> - </button>
+                                          <span className="quantity-label"> 10 </span>
+                                          <button className="button-size"> + </button>
+                                     <span className="price-label"> {'\u20B9' + parseFloat(Math.round(255 * 100) / 100).toFixed(2)} </span>
+                                 </div>
+                                 <div className="item-list">
+                                     <FontAwesomeIcon icon={faStopCircle} className="non-veg"/>
+                                     <span className="added-item-name"> Hakka noodles </span>
+                                     <button className="button-size"> - </button>
+                                     <span className="quantity-label"> 10 </span>
+                                     <button className="button-size"> + </button>
+                                     <span className="price-label"> {'\u20B9' + parseFloat(Math.round(10 * 100) / 100).toFixed(2)} </span>
+                                 </div>
+                                
                                 <div className="total-amount-section">
                                     <span> TOTAL AMOUNT </span>
-                                    <span> {'\u20B9' + parseFloat(Math.round(this.state.totalNumberOfItems * 100) / 100).toFixed(2)} </span>
+                                    <span className="total-amount"> {'\u20B9' + parseFloat(Math.round(this.state.totalNumberOfItems * 100) / 100).toFixed(2)} </span>
                                 </div>
                             </CardContent>
                             <CardActions>
