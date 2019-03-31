@@ -7,9 +7,12 @@ import Header from '../../common/header/Header';
 import Star from '@material-ui/icons/Star';
 import Divider from '@material-ui/core/Divider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faLessThanEqual } from '@fortawesome/free-solid-svg-icons';
 import IconButton from '@material-ui/core/IconButton';
 import Add from '@material-ui/icons/Add';
+import Card from "@material-ui/core/Card";
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 
 const styles = {
     star: {
@@ -17,7 +20,11 @@ const styles = {
     },
     icon: {
         margin: 10
-      },
+    },
+      card: {
+        width: '95%',
+        height: 'auto'
+    }
 };
 
 class Details extends Component {
@@ -27,7 +34,9 @@ class Details extends Component {
         this.state = {
             restaurantDetail: {},
             locality: "",
-            categoriesList: []
+            categoriesList: [],
+            open: false,
+            successMessage: ""
         }
     }
 
@@ -57,8 +66,17 @@ class Details extends Component {
 
     addButtonHandler = (item_name) =>{
         console.log(item_name)
+        this.setState({
+            open: true,
+            successMessage: "Item added to cart!"
+        })
     }
-
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        this.setState({ open: false });
+    };
     render() {
         const { classes } = this.props;
 
@@ -162,6 +180,30 @@ class Details extends Component {
                          Test
                      </div>
                 </div>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    autoHideDuration={6000}
+                    ContentProps={{
+                        'aria-describedby': 'message-id'
+                    }}
+                    message={<span id="message-id"> {this.state.successMessage}</span>}
+                    action={[
+                        <IconButton
+                          key="close"
+                          aria-label="Close"
+                          color="inherit"
+                          className={classes.close}
+                          onClick={this.handleClose}
+                        >
+                          <CloseIcon />
+                        </IconButton>
+                      ]}
+                />
             </div>
         );
     }
