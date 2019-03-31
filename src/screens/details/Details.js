@@ -81,10 +81,21 @@ class Details extends Component {
         xhrPosts.open("GET", this.props.baseUrl + "/restaurant/" + restaurant_id);
         xhrPosts.send();
     }
-
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        this.setState({ open: false });
+    };
     addButtonHandler = (item) =>{
-
         // Add items into Cart .....
+        this.addingItemIntoCart(item);
+        this.setState({
+            open: true,
+            successMessage: "Item added to cart!"
+        })
+    }
+    addingItemIntoCart = (item) => {
         let itemList = this.state.addedItemsLists.slice();
         var found = false;
         for (let itemObj of this.state.addedItemsLists){
@@ -113,7 +124,6 @@ class Details extends Component {
                 }
             }
         }
-
         // Calculate Quantity and Total Price...
         var totalQuantity = 0;
         var totalAmount = 0
@@ -123,19 +133,31 @@ class Details extends Component {
         }
 
         this.setState({
-            open: true,
-            successMessage: "Item added to cart!",
             addedItemsLists: itemList,
             totalNumberOfItems:totalQuantity,
             totalPrice:totalAmount
         })
     }
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-        this.setState({ open: false });
-    };
+    incrementQuantityHandler = (item) => {
+        console.log("increment by 1");
+        this.addingItemIntoCart(item);
+        this.setState({
+            open: true,
+            successMessage: "Item quantity increased by 1!"
+        })
+    }
+    decrementQuantityHandler = (item) => {
+        console.log("decrement by 1");
+       // Item removed from cart! when Quantity become 0
+
+       // Item quantity decreased by 1! when Quantity >=1
+
+        this.setState({
+            open: true,
+            successMessage: "Item quantity decreased by 1!"
+        })
+    }
+
     checkoutButtonHandler = () => {
         // if item is empty 
         /*
@@ -157,6 +179,7 @@ class Details extends Component {
             console.log('Go to Checkout page')
         }
     }
+
     render() {
         const { classes } = this.props;
 
@@ -280,9 +303,9 @@ class Details extends Component {
                                              <FontAwesomeIcon icon={faStopCircle} className="veg"/>
                                          }
                                          <span className="added-item-name"> {item.item_name} </span>
-                                             <button className="button-size"> - </button>
+                                             <button className="button-size" onClick={this.decrementQuantityHandler.bind(this,item)}> - </button>
                                              <span className="quantity-label"> {item.quantity} </span>
-                                             <button className="button-size"> + </button>
+                                             <button className="button-size" onClick={this.incrementQuantityHandler.bind(this,item)}> + </button>
                                          <span className="price-label"> {'\u20B9' + parseFloat(Math.round(item.price * item.quantity * 100) / 100).toFixed(2)} </span>
                                         </div>
                                     ))
