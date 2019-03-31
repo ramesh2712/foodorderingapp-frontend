@@ -114,7 +114,7 @@ class Details extends Component {
             }
         }
 
-        // Calculate Quantity ...
+        // Calculate Quantity and Total Price...
         var totalQuantity = 0;
         var totalAmount = 0
         for(let object of itemList){

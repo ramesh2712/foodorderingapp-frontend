@@ -176,7 +176,10 @@
     cursor: pointer;
     outline: none;
 }
-
+.button-size:hover { 
+    /* your css code here */ 
+    background: yellow;
+}
 .item-list {
     margin-top: 16px;
     margin-left: 4px;
