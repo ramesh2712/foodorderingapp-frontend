@@ -57,7 +57,7 @@ class Home extends Component {
                 console.log(JSON.parse(this.responseText));
                 let data = JSON.parse(this.responseText);
                 that.setState({
-                    restaurantData: data
+                    restaurantData: data.restaurants
                 })
             }
         });
@@ -72,8 +72,8 @@ class Home extends Component {
         if(!Utils.isEmpty(searchValue)){
             let searchResults = [];
             for (var restaurant in currentRestaurantData){                
-                if (!Utils.isUndefinedOrNull(currentRestaurantData[restaurant].restaurants[0].restaurant_name) &&
-                    currentRestaurantData[restaurant].restaurants[0].restaurant_name.toLowerCase().includes(searchValue.toLowerCase())) {
+                if (!Utils.isUndefinedOrNull(currentRestaurantData[restaurant].restaurant_name) &&
+                    currentRestaurantData[restaurant].restaurant_name.toLowerCase().includes(searchValue.toLowerCase())) {
                         searchResults.push(currentRestaurantData[restaurant])
                 }
             }
@@ -86,8 +86,13 @@ class Home extends Component {
             this.setState({ currentSearchValue: searchValue });
         }
     };
-    cardClickedHandler = (restaurant_id) => {
+    cardClickedHandler = (restaurant_id ,restaurant_categories) => {
         console.log(restaurant_id);
+        
+        this.props.history.push({
+            pathname: "/restaurant/" + restaurant_id,
+            categories: restaurant_categories
+        })
     }
 
     render() {
@@ -101,37 +106,38 @@ class Home extends Component {
         return (
             <div>
                 <Header history={this.props.history} 
-                        searchByRestaurantName={this.searchByRestaurantName}/>
+                        searchByRestaurantName={this.searchByRestaurantName}
+                        showSearchArea={true}/>
                 <div className="flex-container">
                     {dataSource.map(restaurant => (
-                        <Card className={this.props.card} key={restaurant.restaurants[0].id}>
-                            <CardActionArea onClick={this.cardClickedHandler.bind(this, restaurant.restaurants[0].id)}>
+                        <Card className={this.props.card} key={restaurant.id}>
+                            <CardActionArea onClick={this.cardClickedHandler.bind(this, restaurant.id , restaurant.categories)}>
                                 <CardMedia
                                     className={classes.media}
-                                    image={restaurant.restaurants[0].photo_URL}
-                                    title={restaurant.restaurants[0].restaurant_name}
+                                    image={restaurant.photo_URL}
+                                    title={restaurant.restaurant_name}
                                 />
                                 <CardContent className={classes.cardContent}>
                                     <div className="card-content-area">
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {restaurant.restaurants[0].restaurant_name}
+                                            {restaurant.restaurant_name}
                                         </Typography> 
                                         <Typography component="p">
-                                            {restaurant.restaurants[0].categories}
+                                            {restaurant.categories}
                                         </Typography> 
                                         <div className="rating-price-container">
                                             <div className="rating-container">
                                                 <Star className={classes.star} />
                                                 <Typography className={classes.rating}>
-                                                    <span>{restaurant.restaurants[0].customer_rating}</span>
+                                                    <span>{restaurant.customer_rating}</span>
                                                 </Typography>
                                                 <Typography className={classes.rating}>
-                                                    <span>{"(" + restaurant.restaurants[0].number_customers_rated + ")"}</span>
+                                                    <span>{"(" + restaurant.number_customers_rated + ")"}</span>
                                                 </Typography>
                                             </div>
                                             <div className="price-container">
                                                 <Typography>
-                                                    <span>{'\u20B9' + restaurant.restaurants[0].average_price + " for two"}</span>
+                                                    <span>{'\u20B9' + restaurant.average_price + " for two"}</span>
                                                 </Typography>
                                             </div>
                                         </div>

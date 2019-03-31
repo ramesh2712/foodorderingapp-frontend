@@ -98,6 +98,14 @@ class Header extends Component {
             anchorEl: null
         };
     }
+    componentWillMount=()=>{
+        let username = sessionStorage.getItem('username');
+        if(!Utils.isUndefinedOrNullOrEmpty(username)){
+            this.setState({
+                username: username
+            })
+        }
+    }
     openModalHandler = () => {
         this.setState({ modalIsOpen: true })
     }
@@ -157,6 +165,7 @@ class Header extends Component {
                         username: data.first_name
                     });
                     sessionStorage.setItem('access-token', this.getResponseHeader('access-token'));
+                    sessionStorage.setItem('username',data.first_name);
                     that.closeModalHandler();
                 }
                 else if (this.status === 401) {
@@ -346,7 +355,6 @@ class Header extends Component {
         console.log("log-out api started")
         let xhrPosts = new XMLHttpRequest();
         let that = this
-
         xhrPosts.addEventListener("readystatechange", function () {
 
             if (this.readyState === 4) {
@@ -355,6 +363,7 @@ class Header extends Component {
                 console.log(this.status)
                 if (this.status === 200) {
                     sessionStorage.removeItem('access-token');
+                    sessionStorage.removeItem('username');
                     that.props.history.push({
                         pathname: "/"
                       });
@@ -368,7 +377,7 @@ class Header extends Component {
         });
         xhrPosts.open("POST", this.baseUrl + "/customer/logout");
         xhrPosts.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        xhrPosts.setRequestHeader('authorization', sessionStorage.getItem('access-token'));
+        xhrPosts.setRequestHeader('authorization', "Bearer "+ sessionStorage.getItem('access-token'));
         xhrPosts.send();
     }
     render() {
@@ -383,20 +392,22 @@ class Header extends Component {
                             <Fastfood />
                         </SvgIcon>
                     </div>
-                    <div>
-                        <Input className={classes.root}
-                            id="input-with-icon-adornment"
-                            onChange={this.props.searchByRestaurantName.bind(this)}
-                            startAdornment={
-                                <InputAdornment position="start" className="search">
-                                    <SvgIcon>
-                                        <Search />
-                                    </SvgIcon>
-                                </InputAdornment>
-                            }
-                            placeholder="Search by Restaurant Name"
-                        />
-                    </div>
+                    {this.props.showSearchArea === true &&
+                        <div>
+                         <Input className={classes.root}
+                             id="input-with-icon-adornment"
+                             onChange={this.props.searchByRestaurantName.bind(this)}
+                             startAdornment={
+                                 <InputAdornment position="start" className="search">
+                                     <SvgIcon>
+                                         <Search />
+                                     </SvgIcon>
+                                 </InputAdornment>
+                             }
+                             placeholder="Search by Restaurant Name"
+                         />
+                        </div>
+                    }
                     <div className="login-button">
                         {this.state.username !== "" &&
                             <Button onClick={this.openMenuItemsHandler} 

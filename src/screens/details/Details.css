@@ -1,0 +1,201 @@
+.restaurant-main-container {
+    display: flex;
+    height: 225px;
+    width: 100%;
+    background: lightgray;
+}
+
+.restaurant-details-container {
+    display: flex;
+    margin: 25px;
+    width: 100%;
+}
+
+.image-container {
+    width: 20%;
+    align-self: center;
+}
+
+.restaurant-image {
+    width: 220px;
+    height: 175px;
+}
+
+.information-container {
+    width: 60%;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.restaurant-name-container {
+    display: flex;
+    margin-bottom: 6px;
+}
+
+.restaurant-name {
+    font-size: 25px;
+    width: 70%;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.restaurant-locality-container{
+    display: flex;
+    margin-bottom: 10px;
+}
+.restaurant-locality {
+    font-size: 14px;
+    margin-top: 4px;
+    margin-left: 15px;
+    text-transform: uppercase;
+}
+
+.restaurant-categories-container {
+    display: flex;
+    margin-bottom: 10px
+}
+
+.restaurant-categories {
+    font-size: 12px;
+    margin-top: 8px;
+    margin-left: 15px;
+}
+
+.rating-details-container {
+    width: 35%;
+    margin-top: 5px;
+    margin-left: 15px;
+}
+.rating-details {
+    color: black;
+    font: 12px;
+    display: flex;
+}
+.rating-rr {
+    align-self: center;
+    margin-top: 2px;
+    margin-left: 3px;
+}
+.avg-rating {
+    color: gray;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.customer-rating {
+    font-weight: bolder;
+}
+.count-container {
+    display: flex;
+}
+.data-container {
+    width: 50%;
+}
+.menu-cart-container {
+    width: 100%;
+    direction: flex;
+}
+.menu-items-container {
+    width: 45%;
+    float: left;
+    padding: 10px;
+    margin: 30px;
+}
+
+.cart-container {
+    margin-top: 40px;
+    margin-right: 30px;
+    width : 40%;
+    float: right;
+}
+.category-name-container {
+   color: gray;
+   text-transform: uppercase;
+   padding: 10px;
+}
+.divider-line {
+    padding: 5px;
+}
+
+.item-container {
+    display: flex;
+    margin: 10px;
+}
+
+.item-info{
+    align-self: center;
+    width: 100%;
+}
+
+.veg {
+    color: green;
+    margin-right: 20px;
+}
+
+.non-veg {
+    color: red;
+    margin-right: 20px;
+}
+
+.price-info {
+  width: 50%;
+}
+
+.spacing {
+ margin-right: 50px;
+}
+
+.my-cart {
+    margin-left : 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.total-amount-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 35px;
+}
+
+.total-amount {
+    margin-right: 15px;
+}
+.button-size {
+    font-size: 20px;
+    font-weight: bold;
+    background: none;
+    border: none;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    outline: none;
+}
+.button-size:hover { 
+    /* your css code here */ 
+    background: yellow;
+}
+.item-list {
+    margin-top: 16px;
+    margin-left: 4px;
+}
+.added-item-name {
+    color: grey;
+    font-size: 16px;
+    margin-left: 4px;
+    margin-right: 80px;
+}
+
+.quantity-label {
+    margin : 4px;
+}
+
+.price-label {
+    margin-left: 40px;
+    color: gray;
+}
