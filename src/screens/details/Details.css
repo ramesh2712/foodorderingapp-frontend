@@ -147,3 +147,18 @@
 .spacing {
  margin-right: 50px;
 }
+
+.my-cart {
+    margin-left : 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.total-amount-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 35px;
+}
