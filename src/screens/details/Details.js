@@ -95,6 +95,7 @@ class Details extends Component {
             successMessage: "Item added to cart!"
         })
     }
+
     addingItemIntoCart = (item) => {
         let itemList = this.state.addedItemsLists.slice();
         var found = false;
@@ -151,10 +152,35 @@ class Details extends Component {
        // Item removed from cart! when Quantity become 0
 
        // Item quantity decreased by 1! when Quantity >=1
+        let itemList = this.state.addedItemsLists.slice();
+        let isItemRemoved = false
+        for (let itemObj of this.state.addedItemsLists){
+            let itemNode = itemObj;
+            if (itemObj.id === item.id){
+                 if(itemNode.quantity > 1) {
+                    itemNode.quantity = itemNode.quantity - 1;
+                    let foundIndex = itemList.findIndex(x => x.id === item.id);
+                    itemList[foundIndex] = itemNode;
+                 }
+                 else{
+                    let foundIndex = itemList.findIndex(x => x.id === item.id);
+                    if (foundIndex > -1) {
+                        itemList.splice(foundIndex, 1);
+                      }
+                    isItemRemoved = true;
+                 }
+            }
+        }
 
+        var message = "Item quantity decreased by 1!";
+        if(isItemRemoved === true) {
+            message = "Item removed from cart!";
+        }
+       
         this.setState({
             open: true,
-            successMessage: "Item quantity decreased by 1!"
+            successMessage: message,
+            addedItemsLists: itemList
         })
     }
 
