@@ -105,7 +105,6 @@ class Details extends Component {
                 break;
             }
         }
-
         if(found === false){
             var item_detail = {};
             item_detail.id = item.id;
@@ -195,23 +194,26 @@ class Details extends Component {
 
     checkoutButtonHandler = () => {
         // if item is empty 
-        /*
-        this.setState({
-            open: true,
-            successMessage: "Please add an item to your cart!"
-        })
-        */
-        // Check for Customer logged in or not ....
-        var token = sessionStorage.getItem('access-token');
-        console.log(token)
-        if (Utils.isUndefinedOrNullOrEmpty(token)){
+
+        console.log(this.state.addedItemsLists)
+        if(this.state.addedItemsLists.length === 0){
             this.setState({
                 open: true,
-                successMessage: "Please login first!"
+                successMessage: "Please add an item to your cart!"
             })
-        }
-        else {
-            console.log('Go to Checkout page')
+        } else {
+             // Check for Customer logged in or not ....
+            var token = sessionStorage.getItem('access-token');
+            console.log(token)
+            if (Utils.isUndefinedOrNullOrEmpty(token)){
+                 this.setState({
+                    open: true,
+                    successMessage: "Please login first!"
+                 })
+             }
+             else {
+                 console.log("Go to checkout page")
+             }
         }
     }
 

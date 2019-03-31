@@ -98,6 +98,14 @@ class Header extends Component {
             anchorEl: null
         };
     }
+    componentWillMount=()=>{
+        let username = sessionStorage.getItem('username');
+        if(!Utils.isUndefinedOrNullOrEmpty(username)){
+            this.setState({
+                username: username
+            })
+        }
+    }
     openModalHandler = () => {
         this.setState({ modalIsOpen: true })
     }
@@ -157,6 +165,7 @@ class Header extends Component {
                         username: data.first_name
                     });
                     sessionStorage.setItem('access-token', this.getResponseHeader('access-token'));
+                    sessionStorage.setItem('username',data.first_name);
                     that.closeModalHandler();
                 }
                 else if (this.status === 401) {
@@ -354,7 +363,7 @@ class Header extends Component {
                 console.log(this.status)
                 if (this.status === 200) {
                     sessionStorage.removeItem('access-token');
-
+                    sessionStorage.removeItem('username');
                     that.props.history.push({
                         pathname: "/"
                       });
