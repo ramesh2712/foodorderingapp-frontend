@@ -58,6 +58,7 @@ class Details extends Component {
     }
 
     componentWillMount = () => {
+
         this.callApiToGetResturantDetail()
     }
     
@@ -213,6 +214,9 @@ class Details extends Component {
              }
              else {
                  console.log("Go to checkout page")
+                 this.props.history.push({
+                    pathname: "/checkout"
+                 })
              }
         }
     }
