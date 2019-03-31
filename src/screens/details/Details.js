@@ -172,6 +172,13 @@ class Details extends Component {
             }
         }
 
+        var totalQuantity = 0;
+        var totalAmount = 0
+        for(let object of itemList){
+            totalQuantity += object.quantity;
+            totalAmount += object.quantity * object.price;
+        }
+
         var message = "Item quantity decreased by 1!";
         if(isItemRemoved === true) {
             message = "Item removed from cart!";
@@ -180,7 +187,9 @@ class Details extends Component {
         this.setState({
             open: true,
             successMessage: message,
-            addedItemsLists: itemList
+            addedItemsLists: itemList,
+            totalNumberOfItems: totalQuantity,
+            totalPrice: totalAmount
         })
     }
 
