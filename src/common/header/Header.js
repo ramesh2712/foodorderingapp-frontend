@@ -346,7 +346,6 @@ class Header extends Component {
         console.log("log-out api started")
         let xhrPosts = new XMLHttpRequest();
         let that = this
-        sessionStorage.removeItem('access-token');
         xhrPosts.addEventListener("readystatechange", function () {
 
             if (this.readyState === 4) {
@@ -354,6 +353,8 @@ class Header extends Component {
                 console.log(this.responseText);
                 console.log(this.status)
                 if (this.status === 200) {
+                    sessionStorage.removeItem('access-token');
+
                     that.props.history.push({
                         pathname: "/"
                       });
@@ -367,7 +368,7 @@ class Header extends Component {
         });
         xhrPosts.open("POST", this.baseUrl + "/customer/logout");
         xhrPosts.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        xhrPosts.setRequestHeader('authorization', sessionStorage.getItem('access-token'));
+        xhrPosts.setRequestHeader('authorization', "Bearer "+ sessionStorage.getItem('access-token'));
         xhrPosts.send();
     }
     render() {
