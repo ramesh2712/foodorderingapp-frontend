@@ -1,0 +1,48 @@
+.checkout-main-container {
+    width: 100%;
+    direction: flex;
+}
+
+.checkout-container {
+    width: 65%;
+    float: left;
+    height: auto;
+}
+
+.summary-container {
+    margin-top: 20px;
+    margin-right: 10px;
+    width : 30%;
+    float: right;
+    height: auto;
+}
+
+.payment-container {
+    margin-top: 20px
+}
+
+.summery-info {
+    font-size: 20px;
+    color: grey;
+}
+
+.cardStyle {
+    width: 95%;
+    padding: 5px;
+    margin: auto;
+    text-align: left;
+  }
+
+  .res-name {
+    margin-top: 25px;
+  }
+  .amount-container {
+      display: flex;
+      justify-content: space-between;
+  }
+
+  .net-amount-label {
+    font: 20px;
+    color: black;
+    margin-top: 20px;
+  }
