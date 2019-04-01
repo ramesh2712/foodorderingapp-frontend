@@ -16,7 +16,7 @@ import AppBar from '@material-ui/core/AppBar';
 
 const styles = {
     root: {
-        width: '95%'
+        width: '98%'
     },
     button: {
         marginTop: 50,
@@ -120,7 +120,9 @@ class Checkout extends Component {
             if (this.readyState === 4) {
                 console.log(this.responseText.addresses);
                 if (Utils.isUndefinedOrNullOrEmpty(this.responseText.addresses)) {
-
+                    that.setState({
+                        addressList : []
+                    })
                 } else {
 
                 }
@@ -229,7 +231,7 @@ class Checkout extends Component {
                                     <Step key={label}>
                                         <StepLabel>{label}</StepLabel>
                                         <StepContent>
-                                            {index == 0 && 
+                                            {index === 0 && 
                                                <div>
                                                  <AppBar position="static">
                                                    <Tabs value={value} onChange={this.handleChange}>
@@ -237,8 +239,20 @@ class Checkout extends Component {
                                                      <Tab label="New Address" />
                                                    </Tabs>
                                                  </AppBar>
-                                                 {value === 0 && <TabContainer>Existing Address</TabContainer>}
-                                                 {value === 1 && <TabContainer>New Address</TabContainer>}
+                                                 { value === 0 && 
+                                                    <TabContainer>
+                                                        {
+                                                            this.state.addressList.length === 0 &&
+                                                            <Typography>
+                                                                There are no saved addresses! You can save an address using the 'New Address' tab or using your ‘Profile’ menu option.
+                                                            </Typography>
+                                                        }
+                                                       
+                                                    </TabContainer>
+                                                 }
+                                                 { value === 1 && 
+                                                    <TabContainer>New Address</TabContainer>
+                                                 }
                                                </div>
                                             }
                                             <div className={classes.actionsContainer}>
