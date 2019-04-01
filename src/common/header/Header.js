@@ -362,8 +362,6 @@ class Header extends Component {
                 console.log(this.responseText);
                 console.log(this.status)
                 if (this.status === 200) {
-                    sessionStorage.removeItem('access-token');
-                    sessionStorage.removeItem('username');
                     that.props.history.push({
                         pathname: "/"
                       });
@@ -373,6 +371,8 @@ class Header extends Component {
                         loginErrorMsg: data.message
                     })
                 }
+                sessionStorage.removeItem('access-token');
+                sessionStorage.removeItem('username');
             }
         });
         xhrPosts.open("POST", this.baseUrl + "/customer/logout");

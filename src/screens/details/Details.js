@@ -215,7 +215,10 @@ class Details extends Component {
              else {
                  console.log("Go to checkout page")
                  this.props.history.push({
-                    pathname: "/checkout"
+                    pathname: "/checkout",
+                    restaurant_id: this.props.match.params.id,
+                    itemList : this.state.addedItemsLists,
+                    totalAmount : this.state.totalPrice
                  })
              }
         }
