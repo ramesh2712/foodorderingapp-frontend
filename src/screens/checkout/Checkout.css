@@ -1,13 +1,11 @@
 .checkout-main-container {
     width: 100%;
     direction: flex;
-    background: lightgray;
 }
 
 .checkout-container {
     width: 65%;
     float: left;
-    background: pink;
     height: auto;
 }
 
@@ -18,4 +16,8 @@
     float: right;
     background: yellow;
     height: auto;
+}
+
+.gridList-container {
+    padding: 10px
 }

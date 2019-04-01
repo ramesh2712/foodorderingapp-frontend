@@ -19,6 +19,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 const styles = {
     root: {
@@ -33,7 +36,12 @@ const styles = {
     },
     formControl: {
         width: "28%"
-    }
+    },
+    gridListMain: {
+        transform: 'translateZ(0)',
+        cursor: 'pointer',
+        flexWrap: 'nowrap'
+    },
 }
 
 const ITEM_HEIGHT = 48;
@@ -99,8 +107,7 @@ class Checkout extends Component {
             console.log(" Call Api to get Payment and state and addresses")
             this.callApiToGetStateList();
             this.callApiToGetPaymentMethods();
-            this.callApiToGetAddressListOfCustomer()
-
+            this.callApiToGetAddressListOfCustomer();
         }
     }
 
@@ -149,17 +156,17 @@ class Checkout extends Component {
         xhrPosts.addEventListener("readystatechange", function () {
 
             if (this.readyState === 4) {
-                console.log(this.responseText);
-                console.log(this.status)
-                if (Utils.isUndefinedOrNullOrEmpty(this.responseText.addresses)) {
+                console.log(JSON.parse(this.responseText).addresses);
+                let addressList = JSON.parse(this.responseText).addresses;
+                console.log(addressList)
+                if (Utils.isUndefinedOrNullOrEmpty(addressList)) {
                     that.setState({
                         addressList: []
                     })
                 } else {
-                    console.log(this.responseText);
                     if (this.status === 200) {
                         that.setState({
-                            addressList: this.responseText.addresses
+                            addressList: addressList
                         })
                     }
                 }
@@ -330,9 +337,26 @@ class Checkout extends Component {
                                                                 this.state.addressList.length === 0 &&
                                                                 <Typography>
                                                                     There are no saved addresses! You can save an address using the 'New Address' tab or using your ‘Profile’ menu option.
-                                                            </Typography>
+                                                                </Typography>
                                                             }
+                                                            {
+                                                                this.state.addressList.length !== 0 &&
+                                                                <div className="gridList-container">
+                                                                    <GridList className={classes.gridListMain} cols={3} >
+                                                                        {this.state.addressList.map( address => (
+                                                                            <GridListTile key={address.id}>
+                                                                                <Typography component="p">{address.flat_building_name}</Typography>
+                                                                                <Typography component="p">{address.locality}</Typography>
+                                                                                <Typography component="p">{address.city}</Typography>
+                                                                                <Typography component="p">{address.pincode}</Typography>
+                                                                                <Typography component="p">{address.state.state_name}</Typography>
+                                                                            </GridListTile>
+                                                                         ))
+                                                                        }
+                                                                    </GridList>
+                                                                </div>
 
+                                                            }
                                                         </TabContainer>
                                                     }
                                                     {value === 1 &&
