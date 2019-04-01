@@ -33,12 +33,6 @@ const styles = {
     },
     formControl: {
         width: "28%"
-    },
-    select : {
-        marginTop: 20
-    }
-    ,menu : {
-        height: 200
     }
 }
 
@@ -86,7 +80,7 @@ class Checkout extends Component {
             cityRequired: "dispNone",
             stateRequired: "dispNone",
             pincodeRequired:"dispNone",
-            validPincode : ""
+            validPincode : false
         }
     }
 
@@ -182,11 +176,16 @@ class Checkout extends Component {
         let that = this
 
         var obj = {};
-        obj.city = "";
-        obj.flat_building_name = "";
-        obj.locality = "";
-        obj.pincode = "";
-        obj.state_uuid = "";
+        obj.city = this.state.city;
+        obj.flat_building_name = this.state.flatBuildingNo;
+        obj.locality = this.state.locality;
+        obj.pincode = this.state.pincode;
+        for (let stateObj of this.state.stateList){
+            if(stateObj.state_name === this.state.state){
+                obj.state_uuid = this.stateObj.id;
+                break;
+            }
+        }
 
         xhrPosts.addEventListener("readystatechange", function () {
 
@@ -264,8 +263,42 @@ class Checkout extends Component {
 
     saveAddressHandler = () => {
         console.log("Save Address Clicked")
+        this.state.flatBuildingNo === "" ? this.setState({ flatBuildingNoRequired: "dispBlock" }) : this.setState({ flatBuildingNoRequired: "dispNone" })
+        this.state.locality === "" ? this.setState({ localityRequired: "dispBlock" }) : this.setState({ localityRequired: "dispNone" })
+        this.state.state === "" ? this.setState({ stateRequired: "dispBlock" }) : this.setState({ stateRequired: "dispNone" })
+        this.state.city === "" ? this.setState({ cityRequired: "dispBlock" }) : this.setState({ cityRequired: "dispNone" })
+
+        let validPincodeNumber = this.pincodeValidation()
+        if (validPincodeNumber === true && this.state.flatBuildingNo !== ""  &&
+             this.state.locality !== "" && this.state.state !== "" && this.state.city !== "") {
+                this.callApiToSaveAddressOfCustomer()
+        }
     }
 
+    pincodeValidation = () => {
+        let isValidPincode = false;
+        if (this.state.pincode === "") {
+            this.setState({
+                pincodeRequired: "dispBlock",
+                validPincode: true
+            })
+        } else {
+            // Check for Valid mobile no ...
+            if (this.state.pincode.length === 6) {
+                isValidPincode = true
+                this.setState({
+                    validPincode: true,
+                    pincodeRequired: "dispNone"
+                })
+            } else {
+                this.setState({
+                    validPincode: false,
+                    pincodeRequired: "dispBlock"
+                })
+            }
+        }
+        return isValidPincode
+    }
     render() {
         const { classes } = this.props;
         const steps = this.getSteps();
@@ -329,7 +362,7 @@ class Checkout extends Component {
                                                             </FormControl> <br /> <br />
                                                             <FormControl required className={classes.formControl}>
                                                                 <InputLabel htmlFor="state"> State</InputLabel>
-                                                                <Select className={classes.select}
+                                                                <Select 
                                                                      open={this.state.open}
                                                                      onClose={this.handleClose}
                                                                      onOpen={this.handleOpen}
@@ -355,9 +388,11 @@ class Checkout extends Component {
                                                                 <InputLabel htmlFor="pincode"> Pincode </InputLabel>
                                                                 <Input id="pincode" type="text" pincode={this.state.pincode} onChange={this.inputPincodeChangeHandler} />
                                                                 <FormHelperText className={this.state.pincodeRequired}>
-                                                                     <span className="red">required</span>
+                                                                    {this.state.validPincode === true && <span className="red">required</span>}
+                                                                    {this.state.validPincode === false && <span className="red">Pincode must contain only numbers and must be 6 digits long</span>}
                                                                 </FormHelperText>
                                                             </FormControl> <br /> <br />
+                
                                                             <Button variant="contained" color="secondary" onClick={this.saveAddressHandler} className={classes.loginButton}> SAVE ADDRESS
                                                             </Button>
                                                         </TabContainer>
