@@ -22,10 +22,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+import IconButton from '@material-ui/core/IconButton';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 
 const styles = {
     root: {
-        width: '98%'
+        width: '100%'
     },
     button: {
         marginTop: 30,
@@ -38,10 +40,14 @@ const styles = {
         width: "28%"
     },
     gridListMain: {
+        flexWrap: 'nowrap',
         transform: 'translateZ(0)',
-        cursor: 'pointer',
-        flexWrap: 'nowrap'
+        width: '100%'
     },
+    titleBar : {
+        background: 'white',
+        marginRight: 40
+    }
 }
 
 const ITEM_HEIGHT = 48;
@@ -341,8 +347,8 @@ class Checkout extends Component {
                                                             }
                                                             {
                                                                 this.state.addressList.length !== 0 &&
-                                                                <div className="gridList-container">
-                                                                    <GridList className={classes.gridListMain} cols={3} >
+                                                                <div>
+                                                                    <GridList className={classes.gridListMain} cols={3}>
                                                                         {this.state.addressList.map( address => (
                                                                             <GridListTile key={address.id}>
                                                                                 <Typography component="p">{address.flat_building_name}</Typography>
@@ -350,6 +356,16 @@ class Checkout extends Component {
                                                                                 <Typography component="p">{address.city}</Typography>
                                                                                 <Typography component="p">{address.pincode}</Typography>
                                                                                 <Typography component="p">{address.state.state_name}</Typography>
+                                                                                <GridListTileBar 
+                                                                                classes={{
+                                                                                    root: classes.titleBar
+                                                                                  }}
+                                                                                 actionIcon={
+                                                                                         <IconButton>
+                                                                                            <CheckCircle />
+                                                                                         </IconButton>
+                                                                                 }
+                                                                                 />
                                                                             </GridListTile>
                                                                          ))
                                                                         }
