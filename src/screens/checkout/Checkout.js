@@ -24,6 +24,10 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import CheckCircle from '@material-ui/icons/CheckCircle';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const styles = {
     root: {
@@ -44,21 +48,24 @@ const styles = {
         transform: 'translateZ(0)',
         width: '100%'
     },
-    titleBar : {
+    titleBar: {
         background: 'white',
         marginRight: 60
+    },
+    group: {
+        margin: `10px 0`,
     }
 }
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4 + ITEM_PADDING_TOP,
-      width: 250,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4 + ITEM_PADDING_TOP,
+            width: 250,
+        },
     },
-  },
 };
 
 const TabContainer = function (props) {
@@ -93,9 +100,11 @@ class Checkout extends Component {
             localityRequired: "dispNone",
             cityRequired: "dispNone",
             stateRequired: "dispNone",
-            pincodeRequired:"dispNone",
-            validPincode : false,
-            addressId : ''
+            pincodeRequired: "dispNone",
+            validPincode: false,
+            addressId: '',
+            selectedPayment: 'none',
+            
         }
     }
 
@@ -194,8 +203,8 @@ class Checkout extends Component {
         obj.locality = this.state.locality;
         obj.pincode = this.state.pincode;
 
-        for (let stateObj of this.state.stateList){
-            if(stateObj.state_name === this.state.state){
+        for (let stateObj of this.state.stateList) {
+            if (stateObj.state_name === this.state.state) {
                 obj.state_uuid = stateObj.id;
                 break;
             }
@@ -248,7 +257,7 @@ class Checkout extends Component {
     handleOpen = () => {
         this.setState({ open: true });
     }
-    
+
     inputFlatNumberChangeHandler = (e) => {
         this.setState({
             flatBuildingNo: e.target.value
@@ -281,9 +290,9 @@ class Checkout extends Component {
         this.state.city === "" ? this.setState({ cityRequired: "dispBlock" }) : this.setState({ cityRequired: "dispNone" })
 
         let validPincodeNumber = this.pincodeValidation()
-        if (validPincodeNumber === true && this.state.flatBuildingNo !== ""  &&
-             this.state.locality !== "" && this.state.state !== "" && this.state.city !== "") {
-                this.callApiToSaveAddressOfCustomer()
+        if (validPincodeNumber === true && this.state.flatBuildingNo !== "" &&
+            this.state.locality !== "" && this.state.state !== "" && this.state.city !== "") {
+            this.callApiToSaveAddressOfCustomer()
         }
     }
 
@@ -312,11 +321,19 @@ class Checkout extends Component {
         return isValidPincode
     }
 
+    // Set Address 
     checkAddressHandler = (address) => {
         console.log(address.id)
         this.setState({
             addressId: address.id
         })
+    }
+
+    // Set Payment 
+
+    checkPaymentHandler = (event) => {
+        console.log(event.target.value)
+        this.setState({ selectedPayment: event.target.value });
     }
     render() {
         const { classes } = this.props;
@@ -357,34 +374,33 @@ class Checkout extends Component {
                                                                 this.state.addressList.length !== 0 &&
                                                                 <div>
                                                                     <GridList className={classes.gridListMain} cols={3}>
-                                                                        {this.state.addressList.map( address => (
+                                                                        {this.state.addressList.map(address => (
                                                                             <GridListTile key={address.id}>
                                                                                 <Typography component="p">{address.flat_building_name}</Typography>
                                                                                 <Typography component="p">{address.locality}</Typography>
                                                                                 <Typography component="p">{address.city}</Typography>
                                                                                 <Typography component="p">{address.pincode}</Typography>
                                                                                 <Typography component="p">{address.state.state_name}</Typography>
-                                                                                <GridListTileBar 
-                                                                                classes={{
-                                                                                    root: classes.titleBar
-                                                                                  }}
-                                                                                 actionIcon={
-                                                                                     <IconButton onClick={this.checkAddressHandler.bind(this,address)}>
-                                                                                            {  this.state.addressId === address.id &&
-                                                                                                 <CheckCircle style={{color: 'green'}}/>
+                                                                                <GridListTileBar
+                                                                                    classes={{
+                                                                                        root: classes.titleBar
+                                                                                    }}
+                                                                                    actionIcon={
+                                                                                        <IconButton onClick={this.checkAddressHandler.bind(this, address)}>
+                                                                                            {this.state.addressId === address.id &&
+                                                                                                <CheckCircle style={{ color: 'green' }} />
                                                                                             }
-                                                                                            {     this.state.addressId !== address.id  &&
-                                                                                                  <CheckCircle style={{color: 'grey'}}/>
+                                                                                            {this.state.addressId !== address.id &&
+                                                                                                <CheckCircle style={{ color: 'grey' }} />
                                                                                             }
-                                                                                     </IconButton>
-                                                                                 }
-                                                                                 />
+                                                                                        </IconButton>
+                                                                                    }
+                                                                                />
                                                                             </GridListTile>
-                                                                         ))
+                                                                        ))
                                                                         }
                                                                     </GridList>
                                                                 </div>
-
                                                             }
                                                         </TabContainer>
                                                     }
@@ -408,31 +424,31 @@ class Checkout extends Component {
                                                                 <InputLabel htmlFor="city"> City </InputLabel>
                                                                 <Input id="city" type="text" city={this.state.city} onChange={this.inputCityChangeHandler} />
                                                                 <FormHelperText className={this.state.cityRequired}>
-                                                                        <span className="red">required</span>
+                                                                    <span className="red">required</span>
                                                                 </FormHelperText>
                                                             </FormControl> <br /> <br />
                                                             <FormControl required className={classes.formControl}>
                                                                 <InputLabel htmlFor="state"> State</InputLabel>
-                                                                <Select 
-                                                                     open={this.state.open}
-                                                                     onClose={this.handleClose}
-                                                                     onOpen={this.handleOpen}
-                                                                     value={this.state.state}
-                                                                     onChange={this.inputStateChangeHandler}
-                                                                     inputProps={{
+                                                                <Select
+                                                                    open={this.state.open}
+                                                                    onClose={this.handleClose}
+                                                                    onOpen={this.handleOpen}
+                                                                    value={this.state.state}
+                                                                    onChange={this.inputStateChangeHandler}
+                                                                    inputProps={{
                                                                         name: 'state',
                                                                         id: 'demo-controlled-open-select',
-                                                                      }}
-                                                                      MenuProps={MenuProps}
-                                                                 >
+                                                                    }}
+                                                                    MenuProps={MenuProps}
+                                                                >
                                                                     {this.state.stateList.map(state => (
                                                                         <MenuItem key={state.id} value={state.state_name}>
-                                                                          {state.state_name}
+                                                                            {state.state_name}
                                                                         </MenuItem>
-                                                                     ))}
-                                                               </Select>
+                                                                    ))}
+                                                                </Select>
                                                                 <FormHelperText className={this.state.stateRequired}>
-                                                                     <span className="red">required</span>
+                                                                    <span className="red">required</span>
                                                                 </FormHelperText>
                                                             </FormControl> <br /> <br />
                                                             <FormControl required className={classes.formControl}>
@@ -443,11 +459,32 @@ class Checkout extends Component {
                                                                     {this.state.validPincode === false && <span className="red">Pincode must contain only numbers and must be 6 digits long</span>}
                                                                 </FormHelperText>
                                                             </FormControl> <br /> <br />
-                
+
                                                             <Button variant="contained" color="secondary" onClick={this.saveAddressHandler} className={classes.loginButton}> SAVE ADDRESS
                                                             </Button>
                                                         </TabContainer>
                                                     }
+                                                </div>
+                                            }
+                                            {
+                                                index === 1 &&
+                                                <div className="payment-container">
+                                                    <FormControl component="fieldset" className={classes.formControl}>
+                                                        <FormLabel component="legend" className="payment-container">Select Mode of Payment</FormLabel>
+                                                        <RadioGroup
+                                                            aria-label="Payment"
+                                                            name="payment"
+                                                            className={classes.group}
+                                                            value={this.state.selectedPayment}
+                                                            onChange={this.checkPaymentHandler}
+                                                        >
+                                                            {
+                                                                this.state.paymentMethods.map( payment => (
+                                                                    <FormControlLabel value={payment.payment_name} control={<Radio />} label={payment.payment_name}  key={payment.id}/>
+                                                                ))
+                                                             }                                                            
+                                                        </RadioGroup>
+                                                    </FormControl>
                                                 </div>
                                             }
                                             <div className={classes.actionsContainer}>
