@@ -46,7 +46,7 @@ const styles = {
     },
     titleBar : {
         background: 'white',
-        marginRight: 40
+        marginRight: 60
     }
 }
 
@@ -94,7 +94,8 @@ class Checkout extends Component {
             cityRequired: "dispNone",
             stateRequired: "dispNone",
             pincodeRequired:"dispNone",
-            validPincode : false
+            validPincode : false,
+            addressId : ''
         }
     }
 
@@ -310,6 +311,13 @@ class Checkout extends Component {
         }
         return isValidPincode
     }
+
+    checkAddressHandler = (address) => {
+        console.log(address.id)
+        this.setState({
+            addressId: address.id
+        })
+    }
     render() {
         const { classes } = this.props;
         const steps = this.getSteps();
@@ -361,9 +369,14 @@ class Checkout extends Component {
                                                                                     root: classes.titleBar
                                                                                   }}
                                                                                  actionIcon={
-                                                                                         <IconButton>
-                                                                                            <CheckCircle />
-                                                                                         </IconButton>
+                                                                                     <IconButton onClick={this.checkAddressHandler.bind(this,address)}>
+                                                                                            {  this.state.addressId === address.id &&
+                                                                                                 <CheckCircle style={{color: 'green'}}/>
+                                                                                            }
+                                                                                            {     this.state.addressId !== address.id  &&
+                                                                                                  <CheckCircle style={{color: 'grey'}}/>
+                                                                                            }
+                                                                                     </IconButton>
                                                                                  }
                                                                                  />
                                                                             </GridListTile>
