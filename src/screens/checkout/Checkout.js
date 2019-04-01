@@ -149,24 +149,23 @@ class Checkout extends Component {
         xhrPosts.addEventListener("readystatechange", function () {
 
             if (this.readyState === 4) {
-                console.log(this.responseText.addresses);
+                console.log(this.responseText);
+                console.log(this.status)
                 if (Utils.isUndefinedOrNullOrEmpty(this.responseText.addresses)) {
                     that.setState({
                         addressList: []
                     })
                 } else {
-
-                }
-                console.log(this.status)
-                if (this.status === 200) {
-                    console.log("success")
-                }
-                else if (this.status === 401) {
-                    //console.log(data.message)
+                    console.log(this.responseText);
+                    if (this.status === 200) {
+                        that.setState({
+                            addressList: this.responseText.addresses
+                        })
+                    }
                 }
             }
         });
-        xhrPosts.open("GET", this.baseUrl + "/address/customer");
+        xhrPosts.open("GET", this.props.baseUrl + "/address/customer");
         xhrPosts.setRequestHeader('authorization', "Bearer " + sessionStorage.getItem('access-token'));
         xhrPosts.send();
     }
@@ -180,29 +179,28 @@ class Checkout extends Component {
         obj.flat_building_name = this.state.flatBuildingNo;
         obj.locality = this.state.locality;
         obj.pincode = this.state.pincode;
+
         for (let stateObj of this.state.stateList){
             if(stateObj.state_name === this.state.state){
-                obj.state_uuid = this.stateObj.id;
+                obj.state_uuid = stateObj.id;
                 break;
             }
         }
-
+        console.log(JSON.stringify(obj))
         xhrPosts.addEventListener("readystatechange", function () {
 
             if (this.readyState === 4) {
-                console.log(this.responseText.addresses);
+                console.log(this.responseText);
                 console.log(this.status)
-                if (this.status === 200) {
-                    //console.log("success")
-                }
-                else if (this.status === 401) {
-                    //console.log(data.message)
+                if (this.status === 201) {
+                    that.callApiToGetAddressListOfCustomer();
                 }
             }
         });
-        xhrPosts.open("POST", this.baseUrl + "/address");
+        xhrPosts.open("POST", this.props.baseUrl + "/address");
+        xhrPosts.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         xhrPosts.setRequestHeader('authorization', "Bearer " + sessionStorage.getItem('access-token'));
-        xhrPosts.send(obj);
+        xhrPosts.send(JSON.stringify(obj));
     }
 
     getSteps() {
