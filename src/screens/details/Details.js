@@ -21,6 +21,7 @@ import Badge from '@material-ui/core/Badge';
 import * as Utils from "../../common/Utils";
 import {faStopCircle } from '@fortawesome/free-regular-svg-icons';
 
+
 const styles = {
     star: {
         color: 'black',
@@ -217,6 +218,7 @@ class Details extends Component {
                  this.props.history.push({
                     pathname: "/checkout",
                     restaurant_id: this.props.match.params.id,
+                    restaurant_name : this.state.restaurantDetail.restaurant_name,
                     itemList : this.state.addedItemsLists,
                     totalAmount : this.state.totalPrice
                  })

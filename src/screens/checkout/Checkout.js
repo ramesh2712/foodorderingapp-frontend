@@ -29,7 +29,10 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Paper from '@material-ui/core/Paper';
-
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Snackbar from '@material-ui/core/Snackbar';
+import CardActions from '@material-ui/core/CardActions';
 
 const styles = {
     root: {
@@ -59,7 +62,10 @@ const styles = {
     },
     resetContainer: {
         padding: 20,
-    }
+    },
+    button1 :{
+        width : '100%'
+    },
 }
 
 const ITEM_HEIGHT = 48;
@@ -120,6 +126,11 @@ class Checkout extends Component {
                     itemList : this.state.addedItemsLists,
                     totalAmount : this.state.totalPrice
                     */
+        console.log(this.props.location.restaurant_id)
+        console.log(this.props.location.restaurant_name)
+        console.log(this.props.location.totalAmount)
+        console.log(this.props.location.itemList)
+
         if (Utils.isUndefinedOrNullOrEmpty(this.props.location.restaurant_id)) {
             this.props.history.push({
                 pathname: "/"
@@ -236,9 +247,12 @@ class Checkout extends Component {
     }
 
     handleNext = () => {
-        this.setState(state => ({
-            activeStep: state.activeStep + 1,
-        }));
+        // Check for Address selected
+        if(this.state.addressId !== ''){
+            this.setState(state => ({
+                activeStep: state.activeStep + 1,
+            }));
+        }
     }
 
     handleBack = () => {
@@ -335,7 +349,9 @@ class Checkout extends Component {
     }
 
     // Set Payment 
-
+    placeOrderHandler = () => {
+        console.log('place order')
+    }
     checkPaymentHandler = (event) => {
         console.log(event.target.value)
         this.setState({ selectedPayment: event.target.value });
@@ -517,7 +533,7 @@ class Checkout extends Component {
                             </Stepper>
                             {activeStep === steps.length && (
                              <Paper square elevation={0} className={classes.resetContainer}>
-                                <Typography > <span className="summery-info">View the summary and place your order now!</span></Typography>
+                                <Typography >View the summary and place your order now!</Typography>
                                  <Button onClick={this.handleReset} className={classes.button}>
                                            Change
                                 </Button>
@@ -526,7 +542,27 @@ class Checkout extends Component {
                         </div>
                     </div>
                     <div className="summary-container">
-                        Summary Page
+                        <Card className="cardStyle">
+                            <CardContent>
+                                <Typography variant="headline" component="h2">
+                                    Summary
+                                </Typography>
+                                <div className="res-name">
+                                    <Typography >
+                                         <span className="summery-info">   {this.props.location.restaurant_name} </span>
+                                    </Typography>
+                                </div>
+                                <div className="amount-container">
+                                    <span className="net-amount-label"> Net Amount </span>
+                                    <span className="net-amount-label"> {'\u20B9' + parseFloat(Math.round(this.props.location.totalAmount * 100) / 100).toFixed(2)} </span>
+                                </div>
+                           </CardContent>
+                           <CardActions>
+                                <Button variant="contained" color="primary" className={classes.button1} onClick={this.placeOrderHandler}>
+                                    PLACE ORDER
+                                </Button>
+                             </CardActions>
+                         </Card>
                     </div>
                 </div>
             </div>
