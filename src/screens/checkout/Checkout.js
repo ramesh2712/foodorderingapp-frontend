@@ -28,6 +28,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Paper from '@material-ui/core/Paper';
+
 
 const styles = {
     root: {
@@ -54,6 +56,9 @@ const styles = {
     },
     group: {
         margin: `10px 0`,
+    },
+    resetContainer: {
+        padding: 20,
     }
 }
 
@@ -510,6 +515,14 @@ class Checkout extends Component {
                                     </Step>
                                 ))}
                             </Stepper>
+                            {activeStep === steps.length && (
+                             <Paper square elevation={0} className={classes.resetContainer}>
+                                <Typography > <span className="summery-info">View the summary and place your order now!</span></Typography>
+                                 <Button onClick={this.handleReset} className={classes.button}>
+                                           Change
+                                </Button>
+                             </Paper>
+                            )}
                         </div>
                     </div>
                     <div className="summary-container">
