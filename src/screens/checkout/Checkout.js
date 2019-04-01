@@ -33,6 +33,9 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Snackbar from '@material-ui/core/Snackbar';
 import CardActions from '@material-ui/core/CardActions';
+import Divider from '@material-ui/core/Divider';
+import {faStopCircle } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const styles = {
     root: {
@@ -549,9 +552,27 @@ class Checkout extends Component {
                                 </Typography>
                                 <div className="res-name">
                                     <Typography >
-                                         <span className="summery-info">   {this.props.location.restaurant_name} </span>
+                                         <span className="summery-info">{this.props.location.restaurant_name} </span>
                                     </Typography>
                                 </div>
+                                {
+                                    this.props.location.itemList.map( item => (
+                                       <div className="item-list" key={"item"+ item.id}>
+                                         { 
+                                             item.item_type === "NON_VEG" &&
+                                             <FontAwesomeIcon icon={faStopCircle} className="non-veg"/>
+                                         }
+                                         {
+                                             item.item_type === "VEG" &&
+                                             <FontAwesomeIcon icon={faStopCircle} className="veg"/>
+                                         }
+                                         <span > {item.item_name} </span>
+                                             <span > {item.quantity} </span>
+                                         <span className="price-label"> {'\u20B9' + parseFloat(Math.round(item.price * item.quantity * 100) / 100).toFixed(2)} </span>
+                                        </div>
+                                    ))
+                                }
+                                <Divider variant='fullWidth'/>
                                 <div className="amount-container">
                                     <span className="net-amount-label"> Net Amount </span>
                                     <span className="net-amount-label"> {'\u20B9' + parseFloat(Math.round(this.props.location.totalAmount * 100) / 100).toFixed(2)} </span>
